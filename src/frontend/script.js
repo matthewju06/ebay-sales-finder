@@ -36,12 +36,14 @@ async function handleSearch() {
     try {
         // TODO: Replace with actual API endpoint when backend is ready
         // For now, this is a placeholder that simulates the API call
-        const response = await fetch('/api/search', {
+        const response = await fetch('http://localhost:6767/api/search', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ query: query })
+            body: JSON.stringify({
+                query: query
+            })
         });
 
         if (!response.ok) {
@@ -55,10 +57,10 @@ async function handleSearch() {
         // For now, show mock data since backend isn't connected
         // Remove this when backend is ready
         console.log('Backend not connected yet, showing mock data');
-        showMockResults();
+        //showMockResults();
         
         // Uncomment this when backend is ready:
-        // showError(`Error: ${error.message}`);
+        showError(`Error: ${error.message}`);
     } finally {
         hideLoading();
         searchButton.disabled = false;
@@ -93,20 +95,25 @@ function displayResults(data) {
     items.forEach((item, index) => {
         const row = document.createElement('tr');
         
+        // item number (row num)
         const numberCell = document.createElement('td');
         numberCell.textContent = index + 1;
         
+        // item title
         const titleCell = document.createElement('td');
         titleCell.textContent = item.title || 'N/A';
         
+        // item price and currency
         const priceCell = document.createElement('td');
         const priceValue = item.price?.value || 'N/A';
         const priceCurrency = item.price?.currency || 'USD';
         priceCell.textContent = priceValue !== 'N/A' ? `${priceCurrency} ${priceValue}` : 'N/A';
         
+        // item condition
         const conditionCell = document.createElement('td');
         conditionCell.textContent = item.condition || 'N/A';
         
+        // url cell
         const linkCell = document.createElement('td');
         if (item.itemWebUrl) {
             const link = document.createElement('a');
@@ -118,13 +125,29 @@ function displayResults(data) {
         } else {
             linkCell.textContent = 'N/A';
         }
+
+        // item seller
+        const sellerCell = document.createElement('td');
+        const sellerName = item.seller || 'N/A';
+        const sellerFeedback = item.sellerFeedback || 'N/A';
+        sellerCell.textContent = sellerName !== 'N/A' ? `${sellerName} (${sellerFeedback})` : 'N/A';
+
+        // item category
+        const categoryCell = document.createElement('td');
+        const category = item.mainCategory || 'N/A';
+        categoryCell.textContent = category;
+
+
         
+
+
         row.appendChild(numberCell);
         row.appendChild(titleCell);
         row.appendChild(priceCell);
         row.appendChild(conditionCell);
         row.appendChild(linkCell);
-        
+        row.appendChild(sellerCell);
+        row.appendChild(categoryCell);
         resultsTableBody.appendChild(row);
     });
 

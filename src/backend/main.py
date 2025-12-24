@@ -11,7 +11,7 @@ if not CLIENT_ID or not CLIENT_SECRET:
 TOKEN_URL = "https://api.sandbox.ebay.com/identity/v1/oauth2/token"
 SEARCH_URL = "https://api.sandbox.ebay.com/buy/browse/v1/item_summary/search"
 
-def get_access_token():
+def get_access_token(): # -> str
     # Basic Auth header: base64(client_id:client_secret)
     auth = (CLIENT_ID, CLIENT_SECRET)
 
@@ -30,7 +30,7 @@ def get_access_token():
     return token_info["access_token"]
 
 
-def search_item(item, limit):
+def search_item(item): #str -> list(dict)
     token = get_access_token() 
 
     headers = {
@@ -42,7 +42,6 @@ def search_item(item, limit):
 
     params = {
         "q": q,
-        "limit": limit,
         "auto_correct": "KEYWORD",
         #"filter": "price:[0..100],priceCurrency:USD,buyingOptions:{FIXED_PRICE}",
         "sort": "price"
@@ -57,17 +56,46 @@ def search_item(item, limit):
 
     resp = requests.get(SEARCH_URL, headers=headers, params=params)
     resp.raise_for_status()
-     
-    return resp.json()
 
+    #format of ebay json:
+    #['itemSummaries'] -> list of items
+    # for each item:
+    # itemId, title, leafCategoryIds, categories [{...}], image {}
+    # ... price {value, currency}, itemHref, 
+    # ... seller {username, feedbackPercentage, feedbackScore},
+    # ... condition, conditionId, thumbnailImages {[...]},
+    # ... shippingOptions [{...}], buyingOptions [...], itemWebUrl,
+    # ... itemLocation, additionalImages [{}], ...
+
+    #now we should return a json of the list of just specific items
+    resp_dct = resp.json() #convert the json response from eBay to a dict
+    items = resp_dct.get('itemSummaries', [])
+    
+    filtered_items = []
+    for item in items:
+        filtered_item = {
+            'title': item.get('title'),
+            'price': item.get('price'),
+            'mainCategory': item.get('categories')[0].get('categoryName'),
+            'condition': item.get('condition'),
+            'seller': item.get('seller').get('username'),
+            'sellerFeedback': item.get('seller').get('feedbackPercentage'),
+            'itemWebUrl': item.get('itemWebUrl')
+        }
+        filtered_items.append(filtered_item)
+     
+    return filtered_items
+
+# for testing in console
 def filter_print_response(response):
     items = response['itemSummaries']
     i = 1
     for item in items:
-        print(f"{i}. {item['title']} is {item['price']['value']} {item['price']['currency']}")
+        print(f"{i}. {item['title']}: {item['price']['value']} {item['price']['currency']}")
         i+=1
 
+# when you run this file, it will test and print in console
 if __name__ == "__main__":
-    item_name = input("Search Item: ")
-    qty = input("Num Items: ")
-    print(filter_print_response(search_item(item_name, qty)))
+    #item_name = input("Search Item: ")
+    #print(filter_print_response(search_item(item_name)))
+    print(search_item(input("Item name:")))
