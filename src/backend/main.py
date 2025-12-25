@@ -71,20 +71,20 @@ def search_item(item): #str -> list(dict)
     resp_dct = resp.json() #convert the json response from eBay to a dict
     items = resp_dct.get('itemSummaries', [])
     
-    filtered_items = []
-    for item in items:
-        filtered_item = {
-            'title': item.get('title'),
-            'price': item.get('price'),
-            'mainCategory': item.get('categories')[0].get('categoryName'),
-            'condition': item.get('condition'),
-            'seller': item.get('seller').get('username'),
-            'sellerFeedback': item.get('seller').get('feedbackPercentage'),
-            'itemWebUrl': item.get('itemWebUrl')
-        }
-        filtered_items.append(filtered_item)
+    # filtered_items = []
+    # for item in items:
+    #     filtered_item = {
+    #         'title': item.get('title'),
+    #         'price': item.get('price'),
+    #         'mainCategory': item.get('categories')[0].get('categoryName'),
+    #         'condition': item.get('condition'),
+    #         'seller': item.get('seller').get('username'),
+    #         'sellerFeedback': item.get('seller').get('feedbackPercentage'),
+    #         'itemWebUrl': item.get('itemWebUrl')
+    #     }
+    #     filtered_items.append(filtered_item)
      
-    return filtered_items
+    return items
 
 # for testing in console
 def filter_print_response(response):
@@ -98,4 +98,4 @@ def filter_print_response(response):
 if __name__ == "__main__":
     #item_name = input("Search Item: ")
     #print(filter_print_response(search_item(item_name)))
-    print(search_item(input("Item name:")))
+    search_item(input("Item name:"))

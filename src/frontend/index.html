@@ -45,46 +45,82 @@
 
         <!-- Dashboard Area (shown after successful search) -->
         <div id="dashboardSection" class="dashboard-section" style="display: none;">
-            <div class="dashboard-content">
-                <!-- Left: Insights Panel -->
-                <div class="insights-panel">
-                    <h2>Insights</h2>
-                    <div class="insights-toggle">
-                        <button class="toggle-btn active" data-chart="histogram">Price Distribution</button>
-                        <button class="toggle-btn" data-chart="scatter">Seller vs Price</button>
-                        <button class="toggle-btn" data-chart="bar">Used vs New</button>
+            <h2 class="dashboard-title" id="dashboardTitle">Overview</h2>
+            <div class="dashboard-layout">
+                <!-- Left Sidebar: Metric Cards -->
+                <div class="left-sidebar">
+                    <div class="metric-card">
+                        <div class="metric-label">Total Listings</div>
+                        <div class="metric-value" id="metricTotalListings">-</div>
                     </div>
-                    <div class="graph-container">
-                        <div class="graph-placeholder" id="insightsChart">
-                            <p id="chartTitle">Price Distribution Histogram</p>
+                    <div class="metric-card">
+                        <div class="metric-label">Average Price</div>
+                        <div class="metric-value" id="metricAvgPrice">-</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Median Price</div>
+                        <div class="metric-value" id="metricMedianPrice">-</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Min Price</div>
+                        <div class="metric-value" id="metricMinPrice">-</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Max Price</div>
+                        <div class="metric-value" id="metricMaxPrice">-</div>
+                    </div>
+                </div>
+
+                <!-- Main Content: Chart Panels -->
+                <div class="main-content">
+                    <div class="chart-panel large">
+                        <h3 class="chart-title"># Listings by Price</h3>
+                        <p class="chart-subtitle">Price distribution</p>
+                        <div class="chart-placeholder" id="chartListingsByPrice">
+                            <div class="placeholder-content">Chart placeholder</div>
+                        </div>
+                    </div>
+                    <div class="chart-panel large">
+                        <h3 class="chart-title">Price vs Seller Score</h3>
+                        <p class="chart-subtitle">Scatter plot</p>
+                        <div class="chart-placeholder" id="chartPriceVsSeller">
+                            <div class="placeholder-content">Chart placeholder</div>
+                        </div>
+                    </div>
+                    <div class="chart-panel large">
+                        <h3 class="chart-title">Price by Listing Date</h3>
+                        <p class="chart-subtitle">Time series</p>
+                        <div class="chart-placeholder" id="chartPriceByDate">
+                            <div class="placeholder-content">Chart placeholder</div>
+                        </div>
+                    </div>
+                    <div class="chart-panel large">
+                        <h3 class="chart-title">Additional Insight</h3>
+                        <p class="chart-subtitle">Reserved</p>
+                        <div class="chart-placeholder" id="chartReserved">
                             <div class="placeholder-content">Chart placeholder</div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right: Summary Panel -->
-                <div class="summary-panel">
-                    <h2>Summary</h2>
-                    <div class="summary-content">
-                        <div class="summary-item">
-                            <span class="summary-label">Query:</span>
-                            <span id="summaryQuery" class="summary-value">-</span>
+                <!-- Right Sidebar: Info Cards -->
+                <div class="right-sidebar">
+                    <div class="info-card">
+                        <h3 class="info-card-title">New vs Used</h3>
+                        <div class="info-card-content" id="cardNewVsUsed">
+                            <div class="placeholder-content">Placeholder</div>
                         </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Total Items:</span>
-                            <span id="summaryTotalItems" class="summary-value">-</span>
+                    </div>
+                    <div class="info-card">
+                        <h3 class="info-card-title">Top Categories</h3>
+                        <div class="info-card-content" id="cardTopCategories">
+                            <div class="placeholder-content">Placeholder</div>
                         </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Average Price:</span>
-                            <span id="summaryAvgPrice" class="summary-value">-</span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Price Range:</span>
-                            <span id="summaryPriceRange" class="summary-value">-</span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Top Category:</span>
-                            <span id="summaryTopCategory" class="summary-value">-</span>
+                    </div>
+                    <div class="info-card">
+                        <h3 class="info-card-title">Top States</h3>
+                        <div class="info-card-content" id="cardTopStates">
+                            <div class="placeholder-content">Placeholder</div>
                         </div>
                     </div>
                 </div>
@@ -93,7 +129,10 @@
 
         <!-- Results Table (existing functionality) -->
         <div id="resultsSection" class="results-section" style="display: none;">
-            <h2>Search Results</h2>
+            <div class="results-header">
+                <h2>Search Results</h2>
+                <button id="downloadButton" class="download-btn">Download All Data</button>
+            </div>
             <div id="resultsTableContainer">
                 <table id="resultsTable">
                     <thead>

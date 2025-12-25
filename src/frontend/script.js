@@ -12,16 +12,14 @@ const historyModal = document.getElementById('historyModal');
 const closeHistoryModal = document.getElementById('closeHistoryModal');
 const historyList = document.getElementById('historyList');
 
-// Summary panel elements
-const summaryQuery = document.getElementById('summaryQuery');
-const summaryTotalItems = document.getElementById('summaryTotalItems');
-const summaryAvgPrice = document.getElementById('summaryAvgPrice');
-const summaryPriceRange = document.getElementById('summaryPriceRange');
-const summaryTopCategory = document.getElementById('summaryTopCategory');
 
-// Insights chart elements
-const chartTitle = document.getElementById('chartTitle');
-const insightsChart = document.getElementById('insightsChart');
+// Metric card elements
+const dashboardTitle = document.getElementById("dashboardTitle")
+const metricTotalListings = document.getElementById('metricTotalListings');
+const metricAvgPrice = document.getElementById('metricAvgPrice');
+const metricMedianPrice = document.getElementById('metricMedianPrice');
+const metricMinPrice = document.getElementById('metricMinPrice');
+const metricMaxPrice = document.getElementById('metricMaxPrice');
 
 // Handle search button click
 searchButton.addEventListener('click', handleSearch);
@@ -46,53 +44,20 @@ window.addEventListener('click', (e) => {
     }
 });
 
-// Handle insights chart toggle buttons
-document.addEventListener('DOMContentLoaded', () => {
-    const toggleButtons = document.querySelectorAll('.toggle-btn');
-    toggleButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Remove active class from all buttons
-            toggleButtons.forEach(b => b.classList.remove('active'));
-            // Add active class to clicked button
-            btn.classList.add('active');
-            
-            // Update chart based on data attribute
-            const chartType = btn.getAttribute('data-chart');
-            updateInsightsChart(chartType);
-        });
+// Download button handler
+const downloadButton = document.getElementById('downloadButton');
+if (downloadButton) {
+    downloadButton.addEventListener('click', () => {
+        // Placeholder for download functionality
+        console.log('Download all data clicked');
     });
-});
-
-// Update insights chart display
-function updateInsightsChart(chartType) {
-    const chartTitles = {
-        'histogram': 'Price Distribution Histogram',
-        'scatter': 'Seller vs Price Scatter Plot',
-        'bar': 'Used vs New Bar Chart'
-    };
-    
-    const chartPlaceholders = {
-        'histogram': 'Price distribution histogram placeholder',
-        'scatter': 'Seller vs price scatter plot placeholder',
-        'bar': 'Used vs new bar chart placeholder'
-    };
-    
-    if (chartTitle) {
-        chartTitle.textContent = chartTitles[chartType] || 'Chart';
-    }
-    
-    if (insightsChart) {
-        const placeholderContent = insightsChart.querySelector('.placeholder-content');
-        if (placeholderContent) {
-            placeholderContent.textContent = chartPlaceholders[chartType] || 'Chart placeholder';
-        }
-    }
 }
 
 // Main search handler
 async function handleSearch() {
     const query = searchInput.value.trim();
     
+    // empty search query
     if (!query) {
         showError('Please enter a product name to search.');
         return;
@@ -167,6 +132,8 @@ function displayResults(data, query) {
         return;
     }
 
+    dashboardTitle.textContent = `Overview - ${query}`;
+
     // Save to search history
     saveToHistory(query);
 
@@ -224,8 +191,8 @@ function displayResults(data, query) {
 
         // item seller
         const sellerCell = document.createElement('td');
-        const sellerName = item.seller || 'N/A';
-        const sellerFeedback = item.sellerFeedback || item['seller feedback'] || 'N/A';
+        const sellerName = item.seller?.username || 'N/A';
+        const sellerFeedback = item.seller?.feedbackPercentage || item['seller feedback'] || 'N/A';
         sellerCell.textContent = sellerName !== 'N/A' ? `${sellerName} (${sellerFeedback}%)` : 'N/A';
 
         // item category
@@ -247,13 +214,9 @@ function displayResults(data, query) {
     showResults();
 }
 
-// Populate dashboard with insights and summary
-function populateDashboard(items, query) {
-    // Populate summary panel
-    summaryQuery.textContent = query;
-    summaryTotalItems.textContent = items.length;
-
-    // Calculate average price
+// Populate dashboard with metrics and data
+function populateDashboard(items) {
+    // Extract and parse prices
     const prices = items
         .map(item => {
             let priceValue = item.price;
@@ -266,30 +229,45 @@ function populateDashboard(items, query) {
         })
         .filter(price => price !== null);
     
-    const avgPrice = prices.length > 0
-        ? (prices.reduce((sum, p) => sum + p, 0) / prices.length).toFixed(2)
-        : 'N/A';
-    summaryAvgPrice.textContent = avgPrice !== 'N/A' ? `$${avgPrice}` : 'N/A';
-
-    // Calculate price range
-    if (prices.length > 0) {
-        const minPrice = Math.min(...prices).toFixed(2);
-        const maxPrice = Math.max(...prices).toFixed(2);
-        summaryPriceRange.textContent = `$${minPrice} - $${maxPrice}`;
-    } else {
-        summaryPriceRange.textContent = 'N/A';
+    // Populate metric cards
+    if (metricTotalListings) {
+        metricTotalListings.textContent = items.length;
     }
-
-    // Find top category
-    const categoryCounts = {};
-    items.forEach(item => {
-        const category = item.mainCategory || item['main category'] || 'Unknown';
-        categoryCounts[category] = (categoryCounts[category] || 0) + 1;
-    });
-    const topCategory = Object.keys(categoryCounts).reduce((a, b) => 
-        categoryCounts[a] > categoryCounts[b] ? a : b, 'N/A'
-    );
-    summaryTopCategory.textContent = topCategory;
+    
+    if (prices.length > 0) {
+        // Average price
+        const avgPrice = (prices.reduce((sum, p) => sum + p, 0) / prices.length).toFixed(2);
+        if (metricAvgPrice) {
+            metricAvgPrice.textContent = `$${avgPrice}`;
+        }
+        
+        // Median price
+        const sortedPrices = [...prices].sort((a, b) => a - b);
+        const medianIndex = Math.floor(sortedPrices.length / 2);
+        const medianPrice = sortedPrices.length % 2 === 0
+            ? ((sortedPrices[medianIndex - 1] + sortedPrices[medianIndex]) / 2).toFixed(2)
+            : sortedPrices[medianIndex].toFixed(2);
+        if (metricMedianPrice) {
+            metricMedianPrice.textContent = `$${medianPrice}`;
+        }
+        
+        // Min price
+        const minPrice = Math.min(...prices).toFixed(2);
+        if (metricMinPrice) {
+            metricMinPrice.textContent = `$${minPrice}`;
+        }
+        
+        // Max price
+        const maxPrice = Math.max(...prices).toFixed(2);
+        if (metricMaxPrice) {
+            metricMaxPrice.textContent = `$${maxPrice}`;
+        }
+    } else {
+        if (metricAvgPrice) metricAvgPrice.textContent = 'N/A';
+        if (metricMedianPrice) metricMedianPrice.textContent = 'N/A';
+        if (metricMinPrice) metricMinPrice.textContent = 'N/A';
+        if (metricMaxPrice) metricMaxPrice.textContent = 'N/A';
+    }
 }
 
 // Show mock results for testing (remove when backend is connected)
