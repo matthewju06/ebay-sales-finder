@@ -276,7 +276,7 @@ function drawListingsByPrice(items){
             {
                 label: "Listing",
                 data: [],
-                pointRadius: 5,
+                pointRadius: 3,
             },
         ],
     };
@@ -324,7 +324,7 @@ function drawPriceVsSellerScore(items){
             {
                 label: "Listing",
                 data: [],
-                pointRadius: 5,
+                pointRadius: 3,
             },
         ],
     };
@@ -405,7 +405,7 @@ function drawPriceVsDateListed(items) {
             {
                 label: "Listings",
                 data: points,
-                pointRadius: 4,
+                pointRadius: 3,
             },
         ],
     };
@@ -572,4 +572,75 @@ function showHistoryModal() {
 function hideHistoryModal() {
     historyModal.style.display = 'none';
 }
+
+// Theme Toggle Functionality
+function getThemeIcon() {
+    const themeToggle = document.getElementById('themeToggle');
+    return themeToggle?.querySelector('.theme-icon');
+}
+
+// Load saved theme preference
+function loadTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const themeIcon = getThemeIcon();
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        if (themeIcon) themeIcon.textContent = '☀️';
+    } else {
+        document.body.classList.remove('dark-mode');
+        if (themeIcon) themeIcon.textContent = '🌙';
+    }
+}
+
+// Toggle theme
+function toggleTheme(e) {
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    const themeIcon = getThemeIcon();
+    
+    if (isDarkMode) {
+        document.body.classList.remove('dark-mode');
+        localStorage.setItem('theme', 'light');
+        if (themeIcon) themeIcon.textContent = '🌙';
+    } else {
+        document.body.classList.add('dark-mode');
+        localStorage.setItem('theme', 'dark');
+        if (themeIcon) themeIcon.textContent = '☀️';
+    }
+}
+
+// Initialize theme toggle when DOM is ready
+function initThemeToggle() {
+    const themeToggle = document.getElementById('themeToggle');
+    
+    if (!themeToggle) {
+        console.error('Theme toggle button not found');
+        // Try again after a short delay in case DOM isn't ready
+        setTimeout(initThemeToggle, 100);
+        return;
+    }
+    
+    console.log('Theme toggle initialized');
+    
+    // Handle click on button - use multiple methods to ensure it works
+    themeToggle.onclick = toggleTheme;
+    themeToggle.addEventListener('click', toggleTheme);
+    themeToggle.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        toggleTheme(e);
+    });
+    
+    // Load saved theme
+    loadTheme();
+}
+
+// Initialize immediately (script is at end of body, so DOM should be ready)
+initThemeToggle();
+
+// Also try on DOMContentLoaded as backup
+document.addEventListener('DOMContentLoaded', initThemeToggle);
 
