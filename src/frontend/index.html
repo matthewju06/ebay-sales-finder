@@ -6,8 +6,11 @@
     <title>ListingLab</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <!-- Header with Search -->
+<body>    <!-- Header with Search -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1"></script>
+
     <header class="main-header">
         <div class="header-content">
             <h1 class="logo">ListingLab</h1>
@@ -69,56 +72,60 @@
                     </div>
                 </div>
 
-                <!-- Main Content: Chart Panels -->
-                <div class="main-content">
-                    <div class="chart-panel large">
+                <!-- Top Row: Listings by Price with Info Cards -->
+                <div class="top-row">
+                    <div class="chart-panel dot-plot" id="chartListingsByPrice">
                         <h3 class="chart-title"># Listings by Price</h3>
                         <p class="chart-subtitle">Price distribution</p>
-                        <div class="chart-placeholder" id="chartListingsByPrice">
-                            <div class="placeholder-content">Chart placeholder</div>
+                        <div class="chart-placeholder">
+                            <canvas id="listing-by-price"></canvas>
+                            <script type="module" src="script.js"></script>
                         </div>
                     </div>
-                    <div class="chart-panel large">
-                        <h3 class="chart-title">Price vs Seller Score</h3>
-                        <p class="chart-subtitle">Scatter plot</p>
-                        <div class="chart-placeholder" id="chartPriceVsSeller">
-                            <div class="placeholder-content">Chart placeholder</div>
+                    <div class="right-sidebar">
+                        <div class="info-card">
+                            <h3 class="info-card-title">New vs Used</h3>
+                            <div class="info-card-content" id="cardNewVsUsed">
+                                <div class="placeholder-content">Placeholder</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="chart-panel large">
-                        <h3 class="chart-title">Price by Listing Date</h3>
-                        <p class="chart-subtitle">Time series</p>
-                        <div class="chart-placeholder" id="chartPriceByDate">
-                            <div class="placeholder-content">Chart placeholder</div>
-                        </div>
-                    </div>
-                    <div class="chart-panel large">
-                        <h3 class="chart-title">Additional Insight</h3>
-                        <p class="chart-subtitle">Reserved</p>
-                        <div class="chart-placeholder" id="chartReserved">
-                            <div class="placeholder-content">Chart placeholder</div>
+                        <div class="info-card">
+                            <h3 class="info-card-title">Top Categories</h3>
+                            <div class="info-card-content" id="cardTopCategories">
+                                <div class="placeholder-content">Placeholder</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Right Sidebar: Info Cards -->
-                <div class="right-sidebar">
-                    <div class="info-card">
-                        <h3 class="info-card-title">New vs Used</h3>
-                        <div class="info-card-content" id="cardNewVsUsed">
-                            <div class="placeholder-content">Placeholder</div>
+                <!-- Main Content: Chart Panels (2x2 grid) -->
+                <div class="main-content">
+                    <div class="chart-panel large" id="chartPriceVsSeller">
+                        <h3 class="chart-title">Price vs Seller Score</h3>
+                        <p class="chart-subtitle">Scatter plot</p>
+                        <div class="chart-placeholder">
+                            <canvas id="price-vs-seller-score"></canvas>
+                            <script type="module" src="script.js"></script>
                         </div>
                     </div>
-                    <div class="info-card">
-                        <h3 class="info-card-title">Top Categories</h3>
-                        <div class="info-card-content" id="cardTopCategories">
-                            <div class="placeholder-content">Placeholder</div>
+                    <div class="chart-panel large" id="chartPriceByDate">
+                        <h3 class="chart-title">Price by Listing Date</h3>
+                        <p class="chart-subtitle">Time series</p>
+                        <div class="chart-placeholder">
+                            <canvas id="price-vs-date"></canvas>
+                            <script type="module" src="script.js"></script>
                         </div>
                     </div>
-                    <div class="info-card">
-                        <h3 class="info-card-title">Top States</h3>
-                        <div class="info-card-content" id="cardTopStates">
-                            <div class="placeholder-content">Placeholder</div>
+                    <div class="chart-panel large" id="chartReserved">
+                        <h3 class="chart-title">Additional Insight</h3>
+                        <p class="chart-subtitle">Reserved</p>
+                        <div class="chart-placeholder">
+                        </div>
+                    </div>
+                    <div class="chart-panel large" id="chartReserved2">
+                        <h3 class="chart-title">Additional Insight</h3>
+                        <p class="chart-subtitle">Reserved</p>
+                        <div class="chart-placeholder">
                         </div>
                     </div>
                 </div>

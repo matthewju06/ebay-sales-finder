@@ -1,4 +1,4 @@
-// DOM elements
+ // DOM elements
 const searchInput = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
 const loadingIndicator = document.getElementById('loadingIndicator');
@@ -11,10 +11,10 @@ const historyButton = document.getElementById('historyButton');
 const historyModal = document.getElementById('historyModal');
 const closeHistoryModal = document.getElementById('closeHistoryModal');
 const historyList = document.getElementById('historyList');
+const dashboardTitle = document.getElementById("dashboardTitle")
 
 
 // Metric card elements
-const dashboardTitle = document.getElementById("dashboardTitle")
 const metricTotalListings = document.getElementById('metricTotalListings');
 const metricAvgPrice = document.getElementById('metricAvgPrice');
 const metricMedianPrice = document.getElementById('metricMedianPrice');
@@ -54,6 +54,11 @@ if (downloadButton) {
 }
 
 // Main search handler
+// 1. Resets UI
+// 2. tries a search with the query
+// 3. if query doesnt exist, throw
+// 4. if query valid but not in ebay system, throw
+// 5.
 async function handleSearch() {
     const query = searchInput.value.trim();
     
@@ -96,8 +101,8 @@ async function handleSearch() {
     } catch (error) {
         // For now, show mock data since backend isn't connected
         // Remove this when backend is ready
-        console.log('Backend not connected yet, showing mock data');
-        showMockResults(query);
+        console.log('Backend not connected');
+        return;
         
         // Uncomment this when backend is ready:
         // showError(`Error: ${error.message}`);
@@ -109,22 +114,6 @@ async function handleSearch() {
 
 // Display search results
 function displayResults(data, query) {
-    // Expected data structure:
-    // {
-    //   itemSummaries: [
-    //     {
-    //       title: "Product Title",
-    //       price: "99.99",
-    //       currency: "USD",
-    //       condition: "NEW",
-    //       itemWebUrl: "https://...",
-    //       seller: "sellerName",
-    //       sellerFeedback: "98.5",
-    //       mainCategory: "Electronics"
-    //     }
-    //   ]
-    // }
-    
     const items = data.itemSummaries || [];
     
     if (items.length === 0) {
@@ -138,7 +127,7 @@ function displayResults(data, query) {
     saveToHistory(query);
 
     // Populate dashboard
-    populateDashboard(items, query);
+    
 
     // Clear previous results
     resultsTableBody.innerHTML = '';
@@ -211,6 +200,7 @@ function displayResults(data, query) {
     });
 
     showDashboard();
+    populateDashboard(items, query);
     showResults();
 }
 
@@ -262,6 +252,10 @@ function populateDashboard(items) {
         if (metricMaxPrice) {
             metricMaxPrice.textContent = `$${maxPrice}`;
         }
+
+       drawListingsByPrice(items);
+       drawPriceVsSellerScore(items);
+       drawPriceVsDateListed(items);
     } else {
         if (metricAvgPrice) metricAvgPrice.textContent = 'N/A';
         if (metricMedianPrice) metricMedianPrice.textContent = 'N/A';
@@ -270,33 +264,203 @@ function populateDashboard(items) {
     }
 }
 
-// Show mock results for testing (remove when backend is connected)
-function showMockResults(query) {
-    const mockData = {
-        itemSummaries: [
+function drawListingsByPrice(items){
+    const canvas = document.getElementById("listing-by-price");
+    if (!canvas) {
+        console.error('Canvas price-vs-seller-score not found');
+        return;
+    }
+
+    const data = {
+        datasets: [
             {
-                title: "Sample Product 1 - Brand New Item",
-                price: { value: "29.99", currency: "USD" },
-                condition: "NEW",
-                itemWebUrl: "https://www.ebay.com"
+                label: "Listing",
+                data: [],
+                pointRadius: 5,
             },
-            {
-                title: "Sample Product 2 - Used Condition",
-                price: { value: "19.99", currency: "USD" },
-                condition: "USED",
-                itemWebUrl: "https://www.ebay.com"
-            },
-            {
-                title: "Sample Product 3 - Excellent Condition",
-                price: { value: "49.99", currency: "USD" },
-                condition: "EXCELLENT",
-                itemWebUrl: "https://www.ebay.com"
-            }
-        ]
+        ],
     };
+
+    for (const item of items){
+        let priceVal = item.price;
+        if (typeof priceVal === "object" && priceVal?.value != null) priceVal = priceVal.value;
+        const price = parseFloat(priceVal);
+
+        if (!Number.isFinite(price)) continue;
+
+        data.datasets[0].data.push({ x: price, y: 0});
+    }
+
+    if (data.datasets[0].data.length === 0) {
+        console.error("No valid points to plot.");
+        return;
+      }
     
-    displayResults(mockData, query || 'Mock Search');
+    if (window.priceDotChart) window.priceDotChart.destroy();
+    window.priceDotChart = new window.Chart(canvas, {
+        type: "scatter",
+        data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // <-- fixed
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { display: false },
+                x: { title: { display: true, text: "Price ($)" } },
+            },
+        },
+    });
 }
+
+function drawPriceVsSellerScore(items){
+    const canvas = document.getElementById("price-vs-seller-score");
+    if (!canvas) {
+        console.error('Canvas price-vs-seller-score not found');
+        return;
+    }
+
+    const data = {
+        datasets: [
+            {
+                label: "Listing",
+                data: [],
+                pointRadius: 5,
+            },
+        ],
+    };
+
+    for (const item of items){
+        let priceVal = item.price;
+        if (typeof priceVal === "object" && priceVal?.value != null) priceVal = priceVal.value;
+        const price = parseFloat(priceVal);
+
+        const feedbackRaw = item.seller?.feedbackPercentage;
+        if (feedbackRaw == null) continue;
+        
+        const feedbackPercentage = parseFloat(feedbackRaw)
+        if (!Number.isFinite(price) || !Number.isFinite(feedbackPercentage)) continue;
+
+        data.datasets[0].data.push({ x: feedbackPercentage, y: price});
+    }
+
+    if (data.datasets[0].data.length === 0) {
+        console.error("No valid points to plot.");
+        return;
+      }
+    
+    if (window.priceVsSellerChart) window.priceVsSellerChart.destroy();
+    window.priceVsSellerChart = new window.Chart(canvas, {
+        type: "scatter",
+        data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // <-- fixed
+            plugins: { legend: { display: false } },
+            scales: {
+                x: {
+                  type: "linear",
+                  position: "bottom",
+                  title: { display: true, text: "Seller feedback (%)" },
+                },
+                y: {
+                  title: { display: true, text: "Price ($)" },
+                },
+            }
+        },
+    });
+}
+
+function drawPriceVsDateListed(items) {
+    const canvas = document.getElementById("price-vs-date");
+    if (!canvas) {
+        console.error("Canvas price-vs-date not found");
+        return;
+    }
+  
+    const points = [];
+  
+    for (const item of items) {
+        // x = date
+        const dateRaw = item.itemCreationDate;
+        if (!dateRaw) continue;
+        const t = new Date(dateRaw);
+        if (Number.isNaN(t.getTime())) continue;
+
+        // y = price
+        let priceVal = item.price;
+        if (typeof priceVal === "object" && priceVal?.value != null) priceVal = priceVal.value;
+        const price = parseFloat(priceVal);
+        if (!Number.isFinite(price)) continue;
+
+        points.push({ x: t, y: price }); // x can be Date or ISO string
+    }
+  
+    if (points.length === 0) {
+        console.error("No valid (date, price) points to plot.");
+        return;
+    }
+  
+    const data = {
+        datasets: [
+            {
+                label: "Listings",
+                data: points,
+                pointRadius: 4,
+            },
+        ],
+    };
+  
+    if (window.priceVsDateChart) window.priceVsDateChart.destroy();
+    window.priceVsDateChart = new window.Chart(canvas, {
+        type: "scatter",
+        data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: {
+                type: "time",
+                time: { unit: "day" },
+                title: { display: true, text: "Date listed" },
+                },
+                y: {
+                title: { display: true, text: "Price ($)" },
+                },
+            },
+        },
+    });
+}
+  
+  
+
+// Show mock results for testing (remove when backend is connected)
+// function showMockResults(query) {
+//     const mockData = {
+//         itemSummaries: [
+//             {
+//                 title: "Sample Product 1 - Brand New Item",
+//                 price: { value: "29.99", currency: "USD" },
+//                 condition: "NEW",
+//                 itemWebUrl: "https://www.ebay.com"
+//             },
+//             {
+//                 title: "Sample Product 2 - Used Condition",
+//                 price: { value: "19.99", currency: "USD" },
+//                 condition: "USED",
+//                 itemWebUrl: "https://www.ebay.com"
+//             },
+//             {
+//                 title: "Sample Product 3 - Excellent Condition",
+//                 price: { value: "49.99", currency: "USD" },
+//                 condition: "EXCELLENT",
+//                 itemWebUrl: "https://www.ebay.com"
+//             }
+//         ]
+//     };
+    
+//     displayResults(mockData, query || 'Mock Search');
+// }
 
 // UI helper functions
 function showLoading() {

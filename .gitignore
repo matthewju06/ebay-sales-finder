@@ -11,3 +11,7 @@ __pycache__/
 .DS_Store
 
 .idea/
+
+node_modules/
+dist/
+.parcel-cache/
