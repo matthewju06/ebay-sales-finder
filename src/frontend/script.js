@@ -1,4 +1,4 @@
- // DOM elements
+// DOM elements
 const searchInput = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
 const loadingIndicator = document.getElementById('loadingIndicator');
@@ -265,22 +265,32 @@ function populateDashboard(items) {
     }
 }
 
+// Helper function to get condition category and color
+function getConditionCategory(condition) {
+    const cond = condition?.toUpperCase() || '';
+    if (cond.includes('NEW')) {
+        return { category: 'New', color: '#279100' };
+    } else if (cond.includes('USED') || cond.includes('PRE-OWNED')) {
+        return { category: 'Used', color: '#0064D2' };
+    } else {
+        return { category: 'Other', color: '#999999' };
+    }
+}
+
 function drawListingsByPrice(items){
     const canvas = document.getElementById("listing-by-price");
     if (!canvas) {
-        console.error('Canvas price-vs-seller-score not found');
+        console.error('Canvas listing-by-price not found');
         return;
     }
 
-    const data = {
-        datasets: [
-            {
-                label: "Listing",
-                data: [],
-                pointRadius: 5,
-            },
-        ],
-    };
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    const textColor = isDarkMode ? '#e5e5e5' : '#333';
+
+    // Separate data by condition
+    const newData = [];
+    const usedData = [];
+    const otherData = [];
 
     for (const item of items){
         let priceVal = item.price;
@@ -289,13 +299,51 @@ function drawListingsByPrice(items){
 
         if (!Number.isFinite(price)) continue;
 
-        data.datasets[0].data.push({ x: price, y: 0});
+        const conditionInfo = getConditionCategory(item.condition);
+        const point = { x: price, y: 0 };
+        
+        if (conditionInfo.category === 'New') {
+            newData.push(point);
+        } else if (conditionInfo.category === 'Used') {
+            usedData.push(point);
+        } else {
+            otherData.push(point);
+        }
     }
 
-    if (data.datasets[0].data.length === 0) {
+    if (newData.length === 0 && usedData.length === 0 && otherData.length === 0) {
         console.error("No valid points to plot.");
         return;
-      }
+    }
+    
+    const data = {
+        datasets: [
+            {
+                label: "New",
+                data: newData,
+                pointRadius: 5,
+                pointBackgroundColor: 'rgba(123, 191, 98, 0.5)', // Lighter green with transparency
+                pointBorderColor: 'rgba(39, 145, 0, 0.75)', // Darker green border with transparency
+                pointBorderWidth: 2,
+            },
+            {
+                label: "Used",
+                data: usedData,
+                pointRadius: 5,
+                pointBackgroundColor: 'rgba(96, 165, 250, 0.5)', // Lighter blue with transparency
+                pointBorderColor: 'rgba(0, 100, 210, 0.75)', // Darker blue border with transparency
+                pointBorderWidth: 2,
+            },
+            {
+                label: "Other",
+                data: otherData,
+                pointRadius: 5,
+                pointBackgroundColor: 'rgba(209, 213, 219, 0.5)', // Lighter grey with transparency
+                pointBorderColor: 'rgba(153, 153, 153, 0.75)', // Darker grey border with transparency
+                pointBorderWidth: 2,
+            },
+        ],
+    };
     
     if (window.priceDotChart) window.priceDotChart.destroy();
     window.priceDotChart = new window.Chart(canvas, {
@@ -303,11 +351,34 @@ function drawListingsByPrice(items){
         data,
         options: {
             responsive: true,
-            maintainAspectRatio: false, // <-- fixed
-            plugins: { legend: { display: false } },
+            maintainAspectRatio: false,
+            elements: {
+                point: {
+                    radius: 5,
+                    hoverRadius: 8
+                }
+            },
+            plugins: { 
+                legend: { 
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        color: textColor,
+                        font: {
+                            size: 12,
+                            family: 'Inter'
+                        },
+                        padding: 10
+                    }
+                } 
+            },
             scales: {
                 y: { display: false },
-                x: { title: { display: true, text: "Price ($)" } },
+                x: { 
+                    title: { display: true, text: "Price ($)" },
+                    ticks: { color: textColor },
+                    grid: { color: isDarkMode ? '#404040' : '#e5e5e5' }
+                },
             },
         },
     });
@@ -320,15 +391,14 @@ function drawPriceVsSellerScore(items){
         return;
     }
 
-    const data = {
-        datasets: [
-            {
-                label: "Listing",
-                data: [],
-                pointRadius: 5,
-            },
-        ],
-    };
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    const textColor = isDarkMode ? '#e5e5e5' : '#333';
+    const gridColor = isDarkMode ? '#404040' : '#e5e5e5';
+
+    // Separate data by condition
+    const newData = [];
+    const usedData = [];
+    const otherData = [];
 
     for (const item of items){
         let priceVal = item.price;
@@ -341,13 +411,51 @@ function drawPriceVsSellerScore(items){
         const feedbackPercentage = parseFloat(feedbackRaw)
         if (!Number.isFinite(price) || !Number.isFinite(feedbackPercentage)) continue;
 
-        data.datasets[0].data.push({ x: feedbackPercentage, y: price});
+        const conditionInfo = getConditionCategory(item.condition);
+        const point = { x: feedbackPercentage, y: price };
+        
+        if (conditionInfo.category === 'New') {
+            newData.push(point);
+        } else if (conditionInfo.category === 'Used') {
+            usedData.push(point);
+        } else {
+            otherData.push(point);
+        }
     }
 
-    if (data.datasets[0].data.length === 0) {
+    if (newData.length === 0 && usedData.length === 0 && otherData.length === 0) {
         console.error("No valid points to plot.");
         return;
-      }
+    }
+    
+    const data = {
+        datasets: [
+            {
+                label: "New",
+                data: newData,
+                pointRadius: 5,
+                pointBackgroundColor: 'rgba(123, 191, 98, 0.5)', // Lighter green with transparency
+                pointBorderColor: 'rgba(39, 145, 0, 0.75)', // Darker green border with transparency
+                pointBorderWidth: 2,
+            },
+            {
+                label: "Used",
+                data: usedData,
+                pointRadius: 5,
+                pointBackgroundColor: 'rgba(96, 165, 250, 0.5)', // Lighter blue with transparency
+                pointBorderColor: 'rgba(0, 100, 210, 0.75)', // Darker blue border with transparency
+                pointBorderWidth: 2,
+            },
+            {
+                label: "Other",
+                data: otherData,
+                pointRadius: 5,
+                pointBackgroundColor: 'rgba(209, 213, 219, 0.5)', // Lighter grey with transparency
+                pointBorderColor: 'rgba(153, 153, 153, 0.75)', // Darker grey border with transparency
+                pointBorderWidth: 2,
+            },
+        ],
+    };
     
     if (window.priceVsSellerChart) window.priceVsSellerChart.destroy();
     window.priceVsSellerChart = new window.Chart(canvas, {
@@ -355,16 +463,39 @@ function drawPriceVsSellerScore(items){
         data,
         options: {
             responsive: true,
-            maintainAspectRatio: false, // <-- fixed
-            plugins: { legend: { display: false } },
+            maintainAspectRatio: false,
+            elements: {
+                point: {
+                    radius: 5,
+                    hoverRadius: 8
+                }
+            },
+            plugins: { 
+                legend: { 
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        color: textColor,
+                        font: {
+                            size: 12,
+                            family: 'Inter'
+                        },
+                        padding: 10
+                    }
+                } 
+            },
             scales: {
                 x: {
                   type: "linear",
                   position: "bottom",
                   title: { display: true, text: "Seller feedback (%)" },
+                  ticks: { color: textColor },
+                  grid: { color: gridColor }
                 },
                 y: {
                   title: { display: true, text: "Price ($)" },
+                  ticks: { color: textColor },
+                  grid: { color: gridColor }
                 },
             }
         },
@@ -378,7 +509,14 @@ function drawPriceVsDateListed(items) {
         return;
     }
   
-    const points = [];
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    const textColor = isDarkMode ? '#e5e5e5' : '#333';
+    const gridColor = isDarkMode ? '#404040' : '#e5e5e5';
+
+    // Separate data by condition
+    const newData = [];
+    const usedData = [];
+    const otherData = [];
   
     for (const item of items) {
         // x = date
@@ -393,10 +531,19 @@ function drawPriceVsDateListed(items) {
         const price = parseFloat(priceVal);
         if (!Number.isFinite(price)) continue;
 
-        points.push({ x: t, y: price }); // x can be Date or ISO string
+        const conditionInfo = getConditionCategory(item.condition);
+        const point = { x: t, y: price }; // x can be Date or ISO string
+        
+        if (conditionInfo.category === 'New') {
+            newData.push(point);
+        } else if (conditionInfo.category === 'Used') {
+            usedData.push(point);
+        } else {
+            otherData.push(point);
+        }
     }
   
-    if (points.length === 0) {
+    if (newData.length === 0 && usedData.length === 0 && otherData.length === 0) {
         console.error("No valid (date, price) points to plot.");
         return;
     }
@@ -404,9 +551,28 @@ function drawPriceVsDateListed(items) {
     const data = {
         datasets: [
             {
-                label: "Listings",
-                data: points,
+                label: "New",
+                data: newData,
                 pointRadius: 5,
+                pointBackgroundColor: 'rgba(123, 191, 98, 0.5)', // Lighter green with transparency
+                pointBorderColor: 'rgba(39, 145, 0, 0.75)', // Darker green border with transparency
+                pointBorderWidth: 2,
+            },
+            {
+                label: "Used",
+                data: usedData,
+                pointRadius: 5,
+                pointBackgroundColor: 'rgba(96, 165, 250, 0.5)', // Lighter blue with transparency
+                pointBorderColor: 'rgba(0, 100, 210, 0.75)', // Darker blue border with transparency
+                pointBorderWidth: 2,
+            },
+            {
+                label: "Other",
+                data: otherData,
+                pointRadius: 5,
+                pointBackgroundColor: 'rgba(209, 213, 219, 0.5)', // Lighter grey with transparency
+                pointBorderColor: 'rgba(153, 153, 153, 0.75)', // Darker grey border with transparency
+                pointBorderWidth: 2,
             },
         ],
     };
@@ -418,15 +584,38 @@ function drawPriceVsDateListed(items) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
+            elements: {
+                point: {
+                    radius: 5,
+                    hoverRadius: 8
+                }
+            },
+            plugins: { 
+                legend: { 
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        color: textColor,
+                        font: {
+                            size: 12,
+                            family: 'Inter'
+                        },
+                        padding: 10
+                    }
+                } 
+            },
             scales: {
                 x: {
                 type: "time",
                 time: { unit: "day" },
                 title: { display: true, text: "Date listed" },
+                ticks: { color: textColor },
+                grid: { color: gridColor }
                 },
                 y: {
                 title: { display: true, text: "Price ($)" },
+                ticks: { color: textColor },
+                grid: { color: gridColor }
                 },
             },
         },
@@ -465,11 +654,16 @@ function drawNewVsUsed(items) {
         datasets: [{
             data: [newCount, usedCount, otherCount],
             backgroundColor: [
-                '#168a40', // Green for New
-                '#0064D2', // Blue for Used
-                '#999999'  // Grey for Other
+                '#279100', // Lighter green fill
+                '#0064D2', // Lighter blue fill
+                '#999999'  // Lighter grey fill
             ],
-            borderWidth: 0
+            borderColor: [
+                '#279100', // Darker green border
+                '#0064D2', // Darker blue border
+                '#999999'  // Darker grey border
+            ],
+            borderWidth: 2
         }]
     };
 
@@ -683,12 +877,14 @@ function toggleTheme(e) {
         if (themeIcon) themeIcon.textContent = '☀️';
     }
     
-    // Update chart colors if chart exists (after toggle, so check new state)
+    // Update chart colors if charts exist (after toggle, so check new state)
     setTimeout(() => {
+        const newIsDarkMode = document.body.classList.contains('dark-mode');
+        const textColor = newIsDarkMode ? '#e5e5e5' : '#333';
+        const gridColor = newIsDarkMode ? '#404040' : '#e5e5e5';
+        
+        // Update donut chart
         if (window.newVsUsedChart) {
-            const newIsDarkMode = document.body.classList.contains('dark-mode');
-            const textColor = newIsDarkMode ? '#e5e5e5' : '#333';
-            const gridColor = newIsDarkMode ? '#404040' : '#e5e5e5';
             window.newVsUsedChart.options.plugins.legend.labels.color = textColor;
             window.newVsUsedChart.options.plugins.tooltip.backgroundColor = newIsDarkMode ? '#2d2d2d' : '#ffffff';
             window.newVsUsedChart.options.plugins.tooltip.titleColor = textColor;
@@ -696,6 +892,32 @@ function toggleTheme(e) {
             window.newVsUsedChart.options.plugins.tooltip.borderColor = gridColor;
             window.newVsUsedChart.update();
         }
+        
+        // Update scatter charts
+        const scatterCharts = [
+            window.priceDotChart,
+            window.priceVsSellerChart,
+            window.priceVsDateChart
+        ];
+        
+        scatterCharts.forEach(chart => {
+            if (chart && chart.options) {
+                if (chart.options.plugins?.legend) {
+                    chart.options.plugins.legend.labels.color = textColor;
+                }
+                if (chart.options.scales) {
+                    Object.keys(chart.options.scales).forEach(scaleKey => {
+                        if (chart.options.scales[scaleKey].ticks) {
+                            chart.options.scales[scaleKey].ticks.color = textColor;
+                        }
+                        if (chart.options.scales[scaleKey].grid) {
+                            chart.options.scales[scaleKey].grid.color = gridColor;
+                        }
+                    });
+                }
+                chart.update();
+            }
+        });
     }, 0);
 }
 
