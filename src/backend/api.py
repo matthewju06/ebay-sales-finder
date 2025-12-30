@@ -1,6 +1,15 @@
 import sys
 import os
 
+# This line tells Python to look in the current folder for main.py
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+from main import search_item 
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+
 @app.route('api/debug-files', methods = ['GET'])
 def debug_files():
     # Get the current working directory of the serverless function
@@ -25,14 +34,6 @@ def debug_files():
         })
     except Exception as e:
         return jsonify({"error": str(e)})
-
-# This line tells Python to look in the current folder for main.py
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-from main import search_item 
-from flask import Flask, request, jsonify
-
-app = Flask(__name__)
 
 @app.route('/api/search', methods = ['POST', 'OPTIONS']) 
 def search(): # -> json form of dict
