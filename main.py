@@ -1,4 +1,6 @@
 import requests, os
+import statistics
+
 # No need to load_dotenv() on Vercel; it's handled by the platform
 # load_dotenv()
 
@@ -67,18 +69,48 @@ def search_item(item): #str -> list(dict)
     # ... itemLocation, additionalImages [{}], ...
 
     #now we should return a json of the list of just specific items
-    resp_dct = resp.json() #convert the json response from eBay to a dict
-    items = resp_dct.get('itemSummaries', [])
+    resp_dct = resp.json() 
+    raw_items = resp_dct.get('itemSummaries', []) 
+    items = remove_price_outliers(raw_items)
      
     return items
 
-# for testing in console
-def filter_print_response(response):
-    items = response['itemSummaries']
-    i = 1
-    for item in items:
-        print(f"{i}. {item['title']}: {item['price']['value']} {item['price']['currency']}")
-        i+=1
+def remove_price_outliers(items):
+    if not items or len(items) < 4:
+        return items
+        
+    # Safer extraction that checks for price existence
+    prices = []
+    for i in items:
+        try:
+            val = i.get('price', {}).get('value')
+            if val:
+                prices.append(float(val))
+        except (ValueError, TypeError):
+            continue
+
+    if len(prices) < 4:
+        return items
+
+    prices.sort()
+    
+    # Calculate quartiles
+    q1 = statistics.quantiles(prices, n=4)[0]
+    q3 = statistics.quantiles(prices, n=4)[2]
+    iqr = q3 - q1
+    
+    upper_bound = q3 + (1.5 * iqr)
+    lower_bound = q1 - (1.5 * iqr)
+
+    # Return filtered items based on price
+    def is_valid(item):
+        try:
+            p = float(item.get('price', {}).get('value', 0))
+            return lower_bound <= p <= upper_bound
+        except:
+            return False
+
+    return [i for i in items if is_valid(i)]
 
 # when you run this file, it will test and print in console
 # if __name__ == "__main__":
