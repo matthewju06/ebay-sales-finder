@@ -1,11 +1,12 @@
 import sys
 import os
+from flask import Flask, request, jsonify
 
 # This line tells Python to look in the current folder for main.py
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
+api_dir = os.path.dirname(os.path.abspath(__file__))
+if api_dir not in sys.path:
+    sys.path.append(api_dir)
 from main import search_item 
-from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 

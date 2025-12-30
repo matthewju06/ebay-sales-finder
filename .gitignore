@@ -15,3 +15,6 @@ __pycache__/
 node_modules/
 dist/
 .parcel-cache/
+
+__pycache__/
+*.pyc
