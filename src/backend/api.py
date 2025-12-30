@@ -1,6 +1,10 @@
-from re import X
-from main import search_item
-import json, os
+import sys
+import os
+
+# This line tells Python to look in the current folder for main.py
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+from main import search_item 
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -30,7 +34,7 @@ def add_cors_headers(response):
     response.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
     return response
 
-
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 6767))
-    app.run(debug=True, host='0.0.0.0', port=port)
+# Uncomment for local deployment
+# if __name__ == '__main__':
+#     port = int(os.environ.get("PORT", 6767))
+#     app.run(debug=True, host='0.0.0.0', port=port)

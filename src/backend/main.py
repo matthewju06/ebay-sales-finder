@@ -1,9 +1,9 @@
 import requests, os
-from dotenv import load_dotenv
-load_dotenv()
+# No need to load_dotenv() on Vercel; it's handled by the platform
+# load_dotenv()
 
-CLIENT_ID = os.getenv("CLIENT_ID")
-CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+CLIENT_ID = os.environ.getenv("CLIENT_ID")
+CLIENT_SECRET = os.environ.getenv("CLIENT_SECRET")
 
 if not CLIENT_ID or not CLIENT_SECRET:
     raise RuntimeError("Missing CLIENT_ID / CLIENT_SECRET")
@@ -79,7 +79,7 @@ def filter_print_response(response):
         i+=1
 
 # when you run this file, it will test and print in console
-if __name__ == "__main__":
-    #item_name = input("Search Item: ")
-    #print(filter_print_response(search_item(item_name)))
-    print(search_item(input("Item name:")))
+# if __name__ == "__main__":
+#     #item_name = input("Search Item: ")
+#     #print(filter_print_response(search_item(item_name)))
+#     print(search_item(input("Item name:")))
