@@ -2,8 +2,8 @@ import requests, os
 # No need to load_dotenv() on Vercel; it's handled by the platform
 # load_dotenv()
 
-CLIENT_ID = os.environ.getenv("CLIENT_ID")
-CLIENT_SECRET = os.environ.getenv("CLIENT_SECRET")
+CLIENT_ID = os.getenv("CLIENT_ID")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 
 if not CLIENT_ID or not CLIENT_SECRET:
     raise RuntimeError("Missing CLIENT_ID / CLIENT_SECRET")
