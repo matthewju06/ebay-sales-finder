@@ -1,19 +1,29 @@
 import sys
 import os
 
-# Get the absolute path to the folder containing api.py (src/backend)
-current_dir = os.path.dirname(os.path.abspath(__file__))
-
-# Add this directory to the Python path if it's not already there
-if current_dir not in sys.path:
-    sys.path.append(current_dir)
-
-# NOW try importing from main.py
-try:
-    from main import search_item
-    print("Successfully imported search_item from main.py")
-except ImportError as e:
-    print(f"FAILED to import main.py: {e}")
+def debug_files():
+    # Get the current working directory of the serverless function
+    cwd = os.getcwd()
+    
+    # List all files and folders in the current directory
+    try:
+        files = os.listdir(cwd)
+        # Also check the specific folder where this file lives
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        script_dir_files = os.listdir(script_dir)
+        
+        return jsonify({
+            "current_working_directory": cwd,
+            "files_in_cwd": files,
+            "directory_of_api_py": script_dir,
+            "files_in_api_py_folder": script_dir_files,
+            "env_check": {
+                "EBAY_CLIENT_ID_EXISTS": "EBAY_CLIENT_ID" in os.environ,
+                "VERCEL_ENV": os.environ.get('VERCEL_ENV', 'not-found')
+            }
+        })
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 # This line tells Python to look in the current folder for main.py
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
