@@ -1,6 +1,7 @@
 import sys
 import os
 
+@app.route('api/debug-files', methods = ['GET'])
 def debug_files():
     # Get the current working directory of the serverless function
     cwd = os.getcwd()
