@@ -701,6 +701,29 @@ button {
 
 #resultsTableContainer {
     overflow-x: auto;
+    overflow-y: auto;
+    max-height: 450px; /* Shows approximately 7 rows (header + 7 data rows) */
+    border-radius: 8px;
+}
+
+/* Custom scrollbar styling for table container */
+#resultsTableContainer::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+#resultsTableContainer::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+}
+
+#resultsTableContainer::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+#resultsTableContainer::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
 }
 
 #resultsTable {

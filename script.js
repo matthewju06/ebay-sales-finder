@@ -184,10 +184,13 @@ function displayResults(data, query) {
         if (item.price) {
             if (typeof item.price === 'object' && item.price.value) {
                 priceValue = item.price.value;
-                priceCurrency = item.price.currency || 'USD';
+                priceCurrency = item.price.currency || '$';
             } else {
                 priceValue = item.price;
-                priceCurrency = item.currency || 'USD';
+                priceCurrency = item.currency || '$';
+            }
+            if (priceCurrency == 'USD') {
+                priceCurrency = '$';
             }
         }
         priceCell.textContent = priceValue !== 'N/A' ? `${priceCurrency} ${priceValue}` : 'N/A';
@@ -204,7 +207,7 @@ function displayResults(data, query) {
             link.href = itemUrl;
             link.target = '_blank';
             link.rel = 'noopener noreferrer';
-            link.textContent = 'View on eBay';
+            link.textContent = 'Listing';
             linkCell.appendChild(link);
         } else {
             linkCell.textContent = 'N/A';
