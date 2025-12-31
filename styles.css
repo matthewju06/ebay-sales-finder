@@ -8,16 +8,16 @@
 
 :root {
     /* Dark mode colors */
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #2d2d2d;
-    --bg-tertiary: #3a3a3a;
-    --text-primary: #e5e5e5;
+    --bg-primary: #0f0f0f;
+    --bg-secondary: #1a1a1a;
+    --bg-tertiary: #252525;
+    --text-primary: #bcbcbc;
     --text-secondary: #b0b0b0;
     --text-tertiary: #808080;
-    --border-color: #404040;
-    --border-color-light: #505050;
-    --shadow: rgba(0, 0, 0, 0.3);
-    --shadow-hover: rgba(0, 0, 0, 0.5);
+    --border-color: #333333;
+    --border-color-light: #404040;
+    --shadow: rgba(0, 0, 0, 0.4);
+    --shadow-hover: rgba(0, 0, 0, 0.6);
     --accent-blue: #0064D2;
     --accent-green: #4ade80;
 }
@@ -79,6 +79,7 @@ body {
     justify-content: space-between;
     align-items: center;
     gap: 20px;
+    min-height: 44px;
 }
 
 .header-actions {
@@ -94,6 +95,9 @@ body {
     margin: 0;
     white-space: nowrap;
     transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    line-height: 1;
 }
 
 .search-box {
@@ -108,23 +112,30 @@ body {
     flex: 1;
     background: var(--bg-tertiary);
     border: none;
-    outline: 2.5px solid var(--text-primary);
+    outline: 2.5px solid white;
     outline-offset: -2.5px;
     border-radius: 50px;
     padding: 4px;
     transition: background-color 0.3s, outline-color 0.3s;
+    height: 44px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
 }
 
 #searchInput {
     width: 100%;
-    padding: 8px 20px;
+    padding: 0 20px;
     font-size: 16px;
+    line-height: 1.2;
     background: transparent;
-    color: #333;
+    color: #bcbcbc;
     border: none;
     border-radius: 50px;
     outline: none;
     transition: all 0.3s;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 #searchInput:focus {
@@ -136,7 +147,7 @@ body {
 }
 
 #searchButton {
-    padding: 8px 60px;
+    padding: 0 60px;
     font-size: 16px;
     line-height: 1.2;
     font-weight: 600;
@@ -146,6 +157,11 @@ body {
     border-radius: 50px;
     cursor: pointer;
     transition: background 0.3s, transform 0.1s;
+    height: 44px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #searchButton:hover {
@@ -165,30 +181,40 @@ body {
 
 /* Pill-shaped container for history button */
 .history-button-container {
-    background: #f5f5f5;
-    border: 1px solid #d5d5d5;
+    background: transparent;
+    border: none;
     border-radius: 50px;
-    padding: 4px;
+    padding: 0;
+    height: 44px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
 }
 
 .history-btn {
-    padding: 8px 24px;
+    padding: 0 24px;
     font-size: 14px;
+    line-height: 1.2;
     font-weight: 600;
-    background: white;
-    color: #0064D2;
-    border: none;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
     border-radius: 50px;
     cursor: pointer;
-    transition: background 0.3s, transform 0.1s;
+    transition: all 0.3s;
     white-space: nowrap;
+    height: 44px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .theme-toggle-btn {
-    background: #f5f5f5;
-    border: 1px solid #d5d5d5;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
     border-radius: 50px;
-    padding: 8px 16px;
+    padding: 0 16px;
     font-size: 18px;
     cursor: pointer;
     transition: all 0.3s;
@@ -196,14 +222,15 @@ body {
     align-items: center;
     justify-content: center;
     min-width: 44px;
-    height: 36px;
+    height: 44px;
     pointer-events: auto;
     position: relative;
     z-index: 1;
+    box-sizing: border-box;
 }
 
 .theme-toggle-btn:hover {
-    background: #e5e5e5;
+    background: var(--border-color);
     transform: scale(1.05);
 }
 
@@ -219,8 +246,8 @@ body {
 }
 
 .history-btn:hover {
-    background: #0064D2;
-    color: white;
+    background: var(--border-color);
+    transform: scale(1.05);
 }
 
 .history-btn:active {
@@ -479,7 +506,9 @@ body {
 }
 
 .modal-content {
-    background-color: white;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
     margin: 5% auto;
     padding: 0;
     border-radius: 12px;
@@ -511,7 +540,7 @@ body {
 
 .modal-header h2 {
     margin: 0;
-    color: #333;
+    color: var(--text-primary);
 }
 
 .close-btn {
@@ -519,7 +548,7 @@ body {
     border: none;
     font-size: 28px;
     font-weight: bold;
-    color: #666;
+    color: var(--text-primary);
     cursor: pointer;
     padding: 0;
     width: 30px;
@@ -532,8 +561,8 @@ body {
 }
 
 .close-btn:hover {
-    background: #f5f5f5;
-    color: #333;
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
 }
 
 .modal-body {
@@ -550,7 +579,8 @@ body {
 
 .history-item {
     padding: 15px;
-    background: #f9f9f9;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     cursor: pointer;
     transition: background 0.2s, transform 0.1s;
@@ -558,7 +588,7 @@ body {
 }
 
 .history-item:hover {
-    background: #f0f0f0;
+    background: var(--border-color);
     transform: translateX(5px);
 }
 
@@ -919,7 +949,7 @@ body.light-mode {
     --border-color-light: #d5d5d5;
     --shadow: rgba(0, 0, 0, 0.05);
     --shadow-hover: rgba(0, 0, 0, 0.1);
-    --accent-blue: #4a9eff;
+    --accent-blue: #0064D2;
     --accent-green: #4ade80;
 }
 
@@ -947,13 +977,14 @@ body.light-mode #searchInput::placeholder {
 }
 
 body.light-mode .history-button-container {
-    background: var(--bg-tertiary);
-    border-color: var(--border-color);
+    background: transparent;
+    border: none;
 }
 
 body.light-mode .history-btn {
-    background: var(--bg-secondary);
-    color: var(--accent-blue);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
 }
 
 body.light-mode .metric-card,
@@ -1057,6 +1088,7 @@ body.light-mode .history-item {
     background: var(--bg-tertiary);
     border-color: var(--border-color);
     color: var(--text-primary);
+    border-left: 4px solid #0064D2;
 }
 
 body.light-mode .history-item:hover {

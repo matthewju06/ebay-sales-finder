@@ -1,3 +1,6 @@
+// Register Chart.js zoom plugin (auto-registered by CDN, but ensure it's available)
+// The plugin is automatically registered when loaded via CDN
+
 // DOM elements
 const searchInput = document.getElementById('searchInput');
 const searchButton = document.getElementById('searchButton');
@@ -60,8 +63,7 @@ if (downloadButton) {
 // 4. if query valid but not in ebay system, throw
 // 5.
 async function handleSearch() {
-    let const query = searchInput.value.trim();
-    query = capitalizeWords(query);
+    const query = searchInput.value.trim();
 
     // empty search query
     if (!query) {
@@ -121,7 +123,7 @@ function displayResults(data, query) {
         return;
     }
 
-    dashboardTitle.innerHTML = `Overview: <span style="color: #0064D2;">${query}</span>`;
+    dashboardTitle.innerHTML = `Overview: <span style="color: #0064D2;">${capitalizeWords(query)}</span>`;
 
     // Save to search history
     saveToHistory(query);
@@ -285,7 +287,7 @@ function drawListingsByPrice(items){
     }
 
     const isLightMode = document.body.classList.contains('light-mode');
-    const textColor = isLightMode ? '#333' : '#e5e5e5';
+    const textColor = isLightMode ? '#333333' : '#bcbcbc';
 
     // Separate data by condition
     const newData = [];
@@ -375,11 +377,40 @@ function drawListingsByPrice(items){
             scales: {
                 y: { display: false },
                 x: { 
-                    title: { display: true, text: "Price ($)" },
-                    ticks: { color: textColor },
-                    grid: { color: isLightMode ? '#e5e5e5' : '#404040'}
+                    title: { 
+                        display: true, 
+                        text: "Price ($)",
+                        font: {
+                            family: 'Inter'
+                        },
+                        color: textColor
+                    },
+                    ticks: { 
+                        color: textColor,
+                        font: {
+                            family: 'Inter'
+                        }
+                    },
+                    grid: { color: isLightMode ? '#e5e5e5' : '#333333'}
                 },
             },
+            plugins: {
+                zoom: {
+                    zoom: {
+                        wheel: {
+                            enabled: true,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'xy',
+                    },
+                    pan: {
+                        enabled: true,
+                        mode: 'xy',
+                    }
+                }
+            }
         },
     });
 }
@@ -392,8 +423,8 @@ function drawPriceVsSellerScore(items){
     }
 
     const isLightMode = document.body.classList.contains('light-mode');
-    const textColor = isLightMode ? '#333' : '#e5e5e5';
-    const gridColor = isLightMode ? '#404040' : '#e5e5e5';
+    const textColor = isLightMode ? '#333333' : '#bcbcbc';
+    const gridColor = isLightMode ? '#e5e5e5' : '#333333';
 
     // Separate data by condition
     const newData = [];
@@ -488,15 +519,56 @@ function drawPriceVsSellerScore(items){
                 x: {
                   type: "linear",
                   position: "bottom",
-                  title: { display: true, text: "Seller feedback (%)" },
-                  ticks: { color: textColor },
+                  title: { 
+                      display: true, 
+                      text: "Seller feedback (%)",
+                      font: {
+                          family: 'Inter'
+                      },
+                      color: textColor
+                  },
+                  ticks: { 
+                      color: textColor,
+                      font: {
+                          family: 'Inter'
+                      }
+                  },
                   grid: { color: gridColor }
                 },
                 y: {
-                  title: { display: true, text: "Price ($)" },
-                  ticks: { color: textColor },
+                  title: { 
+                      display: true, 
+                      text: "Price ($)",
+                      font: {
+                          family: 'Inter'
+                      },
+                      color: textColor
+                  },
+                  ticks: { 
+                      color: textColor,
+                      font: {
+                          family: 'Inter'
+                      }
+                  },
                   grid: { color: gridColor }
                 },
+            },
+            plugins: {
+                zoom: {
+                    zoom: {
+                        wheel: {
+                            enabled: true,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'xy',
+                    },
+                    pan: {
+                        enabled: true,
+                        mode: 'xy',
+                    }
+                }
             }
         },
     });
@@ -510,8 +582,8 @@ function drawPriceVsDateListed(items) {
     }
   
     const isLightMode = document.body.classList.contains('light-mode');
-    const textColor = isLightMode ? '#333' : '#e5e5e5';
-    const gridColor = isLightMode ? '#404040' : '#e5e5e5';
+    const textColor = isLightMode ? '#333333' : '#bcbcbc';
+    const gridColor = isLightMode ? '#e5e5e5' : '#333333';
 
     // Separate data by condition
     const newData = [];
@@ -608,16 +680,57 @@ function drawPriceVsDateListed(items) {
                 x: {
                 type: "time",
                 time: { unit: "day" },
-                title: { display: true, text: "Date listed" },
-                ticks: { color: textColor },
+                title: { 
+                    display: true, 
+                    text: "Date listed",
+                    font: {
+                        family: 'Inter'
+                    },
+                    color: textColor
+                },
+                ticks: { 
+                    color: textColor,
+                    font: {
+                        family: 'Inter'
+                    }
+                },
                 grid: { color: gridColor }
                 },
                 y: {
-                title: { display: true, text: "Price ($)" },
-                ticks: { color: textColor },
+                title: { 
+                    display: true, 
+                    text: "Price ($)",
+                    font: {
+                        family: 'Inter'
+                    },
+                    color: textColor
+                },
+                ticks: { 
+                    color: textColor,
+                    font: {
+                        family: 'Inter'
+                    }
+                },
                 grid: { color: gridColor }
                 },
             },
+            plugins: {
+                zoom: {
+                    zoom: {
+                        wheel: {
+                            enabled: true,
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'xy',
+                    },
+                    pan: {
+                        enabled: true,
+                        mode: 'xy',
+                    }
+                }
+            }
         },
     });
 }
@@ -646,8 +759,8 @@ function drawNewVsUsed(items) {
     }
 
     const isLightMode = document.body.classList.contains('light-mode');
-    const textColor = isLightMode ? '#333' : '#e5e5e5';
-    const gridColor = isLightMode ? '#404040' : '#e5e5e5';
+    const textColor = isLightMode ? '#333333' : '#bcbcbc';
+    const gridColor = isLightMode ? '#e5e5e5' : '#333333';
 
     const data = {
         labels: ['New', 'Used', 'Other'],
@@ -692,7 +805,13 @@ function drawNewVsUsed(items) {
                     titleColor: textColor,
                     bodyColor: textColor,
                     borderColor: gridColor,
-                    borderWidth: 1
+                    borderWidth: 1,
+                    titleFont: {
+                        family: 'Inter'
+                    },
+                    bodyFont: {
+                        family: 'Inter'
+                    }
                 }
             }
         }
@@ -844,16 +963,64 @@ function getThemeIcon() {
     return themeToggle?.querySelector('.theme-icon');
 }
 
+function setThemeIcon(isLightMode) {
+    const themeToggle = document.getElementById('themeToggle');
+    if (!themeToggle) return;
+    
+    const svg = themeToggle.querySelector('.theme-icon');
+    if (!svg) return;
+    
+    // Create new SVG element
+    const newSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    newSvg.setAttribute('class', 'theme-icon');
+    newSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+    newSvg.setAttribute('width', '20');
+    newSvg.setAttribute('height', '20');
+    newSvg.setAttribute('viewBox', '-1 -1 26 26');
+    newSvg.setAttribute('fill', 'none');
+    // Stroke color should be visible in current theme: dark mode needs light stroke, light mode needs dark stroke
+    newSvg.setAttribute('stroke', isLightMode ? '#000000' : '#ffffff');
+    newSvg.setAttribute('stroke-width', '3');
+    newSvg.setAttribute('stroke-linecap', 'round');
+    newSvg.setAttribute('stroke-linejoin', 'round');
+    
+    if (isLightMode) {
+        // Moon icon (to switch to dark mode - shown when in light mode)
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', 'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+        newSvg.appendChild(path);
+    } else {
+        // Sun icon (to switch to light mode - shown when in dark mode)
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', '12');
+        circle.setAttribute('cy', '12');
+        circle.setAttribute('r', '5');
+        newSvg.appendChild(circle);
+        
+        const paths = [
+            'M12 1v2', 'M12 21v2', 'M4.2 4.2l1.4 1.4', 'M18.4 18.4l1.4 1.4',
+            'M1 12h2', 'M21 12h2', 'M4.2 19.8l1.4-1.4', 'M18.4 5.6l1.4-1.4'
+        ];
+        paths.forEach(d => {
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', d);
+            newSvg.appendChild(path);
+        });
+    }
+    
+    // Replace the old SVG with the new one
+    svg.parentNode.replaceChild(newSvg, svg);
+}
+
 // Load saved theme preference
 function loadTheme() {
     const savedTheme = localStorage.getItem('theme');
-    const themeIcon = getThemeIcon();
     if (savedTheme === 'light') {
         document.body.classList.add('light-mode');
-        if (themeIcon) themeIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
+        setThemeIcon(true);
     } else {
         document.body.classList.remove('light-mode');
-        if (themeIcon) themeIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 20 20" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>';
+        setThemeIcon(false);
     }
 }
 
@@ -865,28 +1032,27 @@ function toggleTheme(e) {
     }
     
     const isLightMode = document.body.classList.contains('light-mode');
-    const themeIcon = getThemeIcon();
     
     if (isLightMode) {
         document.body.classList.remove('light-mode');
         localStorage.setItem('theme', 'dark');
-        if (themeIcon) themeIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>';
+        setThemeIcon(false);
     } else {
         document.body.classList.add('light-mode');
         localStorage.setItem('theme', 'light');
-        if (themeIcon) themeIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
+        setThemeIcon(true);
     }
     
     // Update chart colors if charts exist (after toggle, so check new state)
     setTimeout(() => {
         const newIsLightMode = document.body.classList.contains('light-mode');
         const textColor = newIsLightMode ? '#333' : '#e5e5e5';
-        const gridColor = newIsLightMode ? '#404040' : '#e5e5e5';
+        const gridColor = newIsLightMode ? '#e5e5e5' : '#404040';
         
         // Update donut chart
         if (window.newVsUsedChart) {
             window.newVsUsedChart.options.plugins.legend.labels.color = textColor;
-            window.newVsUsedChart.options.plugins.tooltip.backgroundColor = newIsLightMode ? '#2d2d2d' : '#ffffff';
+            window.newVsUsedChart.options.plugins.tooltip.backgroundColor = newIsLightMode ? '#ffffff' : '#2d2d2d';
             window.newVsUsedChart.options.plugins.tooltip.titleColor = textColor;
             window.newVsUsedChart.options.plugins.tooltip.bodyColor = textColor;
             window.newVsUsedChart.options.plugins.tooltip.borderColor = gridColor;
