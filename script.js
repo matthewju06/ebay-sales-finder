@@ -1,5 +1,28 @@
-// Register Chart.js zoom plugin (auto-registered by CDN, but ensure it's available)
-// The plugin is automatically registered when loaded via CDN
+// Register Chart.js zoom plugin when DOM is ready
+function registerZoomPlugin() {
+    if (window.Chart && window.Chart.register) {
+        // Try different possible plugin names from CDN
+        if (typeof window.zoomPlugin !== 'undefined') {
+            window.Chart.register(window.zoomPlugin);
+            console.log('Zoom plugin registered as zoomPlugin');
+        } else if (typeof window.ChartZoom !== 'undefined') {
+            window.Chart.register(window.ChartZoom);
+            console.log('Zoom plugin registered as ChartZoom');
+        } else if (typeof window['chartjs-plugin-zoom'] !== 'undefined') {
+            window.Chart.register(window['chartjs-plugin-zoom']);
+            console.log('Zoom plugin registered');
+        } else {
+            console.warn('Zoom plugin not found. Make sure chartjs-plugin-zoom is loaded.');
+        }
+    }
+}
+
+// Register on DOM ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', registerZoomPlugin);
+} else {
+    registerZoomPlugin();
+}
 
 // DOM elements
 const searchInput = document.getElementById('searchInput');
@@ -394,11 +417,20 @@ function drawListingsByPrice(items){
                     grid: { color: isLightMode ? '#e5e5e5' : '#333333'}
                 },
             },
+            interaction: {
+                mode: 'xy',
+                intersect: false
+            },
             plugins: {
                 zoom: {
+                    limits: {
+                        x: {min: 'original', max: 'original'},
+                        y: {min: 'original', max: 'original'}
+                    },
                     zoom: {
                         wheel: {
-                            enabled: false,
+                            enabled: true,
+                            speed: 0.1
                         },
                         pinch: {
                             enabled: true,
@@ -409,6 +441,8 @@ function drawListingsByPrice(items){
                     pan: {
                         enabled: true,
                         mode: 'xy',
+                        modifierKey: null,
+                        threshold: 10
                     }
                 }
             }
@@ -554,11 +588,20 @@ function drawPriceVsSellerScore(items){
                   grid: { color: gridColor }
                 },
             },
+            interaction: {
+                mode: 'xy',
+                intersect: false
+            },
             plugins: {
                 zoom: {
+                    limits: {
+                        x: {min: 'original', max: 'original'},
+                        y: {min: 'original', max: 'original'}
+                    },
                     zoom: {
                         wheel: {
-                            enabled: false,
+                            enabled: true,
+                            speed: 0.1
                         },
                         pinch: {
                             enabled: true,
@@ -569,6 +612,8 @@ function drawPriceVsSellerScore(items){
                     pan: {
                         enabled: true,
                         mode: 'xy',
+                        modifierKey: null,
+                        threshold: 10
                     }
                 }
             }
@@ -716,11 +761,20 @@ function drawPriceVsDateListed(items) {
                 grid: { color: gridColor }
                 },
             },
+            interaction: {
+                mode: 'xy',
+                intersect: false
+            },
             plugins: {
                 zoom: {
+                    limits: {
+                        x: {min: 'original', max: 'original'},
+                        y: {min: 'original', max: 'original'}
+                    },
                     zoom: {
                         wheel: {
-                            enabled: false,
+                            enabled: true,
+                            speed: 0.1
                         },
                         pinch: {
                             enabled: true,
@@ -731,6 +785,8 @@ function drawPriceVsDateListed(items) {
                     pan: {
                         enabled: true,
                         mode: 'xy',
+                        modifierKey: null,
+                        threshold: 10
                     }
                 }
             }
