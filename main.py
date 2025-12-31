@@ -31,7 +31,7 @@ def get_access_token(): # -> str
     return token_info["access_token"]
 
 
-def search_item(item): #str -> list(dict)
+def search_item(item): #str -> list(dict). search_item(item, min, max, category, page)
     token = get_access_token() 
 
     headers = {
