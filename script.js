@@ -1138,6 +1138,15 @@ function toggleTheme(e) {
             if (chart && chart.options) {
                 if (chart.options.plugins?.legend) {
                     chart.options.plugins.legend.labels.color = textColor;
+                    
+                    if (chart.options.plugins.legend.labels.font) {
+                        chart.options.plugins.legend.labels.font.family = 'Geist Mono';
+                    } else {
+                        chart.options.plugins.legend.labels.font = {
+                            family: 'Geist Mono',
+                            size: 12
+                        };
+                    }
                 }
                 if (chart.options.scales) {
                     Object.keys(chart.options.scales).forEach(scaleKey => {
