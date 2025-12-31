@@ -310,7 +310,7 @@ function drawListingsByPrice(items){
     }
 
     const isLightMode = document.body.classList.contains('light-mode');
-    const textColor = isLightMode ? '#333333' : '#bcbcbc';
+    const textColor = isLightMode ? '#000000' : '#bcbcbc';
 
     // Separate data by condition
     const newData = [];
@@ -461,7 +461,7 @@ function drawPriceVsSellerScore(items){
     }
 
     const isLightMode = document.body.classList.contains('light-mode');
-    const textColor = isLightMode ? '#333333' : '#bcbcbc';
+    const textColor = isLightMode ? '#000000' : '#bcbcbc';
     const gridColor = isLightMode ? '#e5e5e5' : '#333333';
 
     // Separate data by condition
@@ -635,7 +635,7 @@ function drawPriceVsDateListed(items) {
     }
   
     const isLightMode = document.body.classList.contains('light-mode');
-    const textColor = isLightMode ? '#333333' : '#bcbcbc';
+    const textColor = isLightMode ? '#000000' : '#bcbcbc';
     const gridColor = isLightMode ? '#e5e5e5' : '#333333';
 
     // Separate data by condition
@@ -827,7 +827,7 @@ function drawNewVsUsed(items) {
     }
 
     const isLightMode = document.body.classList.contains('light-mode');
-    const textColor = isLightMode ? '#333333' : '#bcbcbc';
+    const textColor = isLightMode ? '#000000' : '#bcbcbc';
     const gridColor = isLightMode ? '#e5e5e5' : '#333333';
 
     const data = {
@@ -1114,7 +1114,7 @@ function toggleTheme(e) {
     // Update chart colors if charts exist (after toggle, so check new state)
     setTimeout(() => {
         const newIsLightMode = document.body.classList.contains('light-mode');
-        const textColor = newIsLightMode ? '#333' : '#e5e5e5';
+        const textColor = newIsLightMode ? '#000000' : '#e5e5e5';
         const gridColor = newIsLightMode ? '#e5e5e5' : '#404040';
         
         // Update donut chart
