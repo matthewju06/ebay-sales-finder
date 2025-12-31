@@ -7,17 +7,17 @@
 }
 
 :root {
-    /* Light mode colors */
-    --bg-primary: #f5f5f5;
-    --bg-secondary: #ffffff;
-    --bg-tertiary: #f9f9f9;
-    --text-primary: #333333;
-    --text-secondary: #666666;
-    --text-tertiary: #999999;
-    --border-color: #e5e5e5;
-    --border-color-light: #d5d5d5;
-    --shadow: rgba(0, 0, 0, 0.05);
-    --shadow-hover: rgba(0, 0, 0, 0.1);
+    /* Dark mode colors */
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --bg-tertiary: #3a3a3a;
+    --text-primary: #e5e5e5;
+    --text-secondary: #b0b0b0;
+    --text-tertiary: #808080;
+    --border-color: #404040;
+    --border-color-light: #505050;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --shadow-hover: rgba(0, 0, 0, 0.5);
     --accent-blue: #0064D2;
     --accent-green: #4ade80;
 }
@@ -907,166 +907,166 @@ body {
     }
 }
 
-/* Dark Mode Styles */
-body.dark-mode {
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #2d2d2d;
-    --bg-tertiary: #3a3a3a;
-    --text-primary: #e5e5e5;
-    --text-secondary: #b0b0b0;
-    --text-tertiary: #808080;
-    --border-color: #404040;
-    --border-color-light: #505050;
-    --shadow: rgba(0, 0, 0, 0.3);
-    --shadow-hover: rgba(0, 0, 0, 0.5);
+/* Light Mode Styles */
+body.light-mode {
+    --bg-primary: #f5f5f5;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f9f9f9;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --text-tertiary: #999999;
+    --border-color: #e5e5e5;
+    --border-color-light: #d5d5d5;
+    --shadow: rgba(0, 0, 0, 0.05);
+    --shadow-hover: rgba(0, 0, 0, 0.1);
     --accent-blue: #4a9eff;
     --accent-green: #4ade80;
 }
 
-body.dark-mode .theme-toggle-btn {
+body.light-mode .theme-toggle-btn {
     background: var(--bg-tertiary);
     border-color: var(--border-color);
 }
 
-body.dark-mode .theme-toggle-btn:hover {
+body.light-mode .theme-toggle-btn:hover {
     background: var(--border-color);
 }
 
-body.dark-mode .search-input-container {
+body.light-mode .search-input-container {
     background: var(--bg-tertiary);
     outline-color: var(--text-primary);
 }
 
-body.dark-mode #searchInput {
+body.light-mode #searchInput {
     background: transparent;
     color: var(--text-primary);
 }
 
-body.dark-mode #searchInput::placeholder {
+body.light-mode #searchInput::placeholder {
     color: var(--text-tertiary);
 }
 
-body.dark-mode .history-button-container {
+body.light-mode .history-button-container {
     background: var(--bg-tertiary);
     border-color: var(--border-color);
 }
 
-body.dark-mode .history-btn {
+body.light-mode .history-btn {
     background: var(--bg-secondary);
     color: var(--accent-blue);
 }
 
-body.dark-mode .metric-card,
-body.dark-mode .chart-panel,
-body.dark-mode .info-card {
+body.light-mode .metric-card,
+body.light-mode .chart-panel,
+body.light-mode .info-card {
     background: var(--bg-secondary);
     border-color: var(--border-color);
     color: var(--text-primary);
 }
 
-body.dark-mode .chart-placeholder {
+body.light-mode .chart-placeholder {
     background: var(--bg-tertiary);
     border-color: var(--border-color);
 }
 
-body.dark-mode .placeholder-content {
+body.light-mode .placeholder-content {
     color: var(--text-tertiary);
 }
 
-body.dark-mode .dashboard-title {
+body.light-mode .dashboard-title {
     color: var(--text-primary);
 }
 
-body.dark-mode .chart-title,
-body.dark-mode .info-card-title {
+body.light-mode .chart-title,
+body.light-mode .info-card-title {
     color: var(--text-primary);
 }
 
-body.dark-mode .chart-subtitle {
+body.light-mode .chart-subtitle {
     color: var(--text-secondary);
 }
 
-body.dark-mode .metric-label {
+body.light-mode .metric-label {
     color: var(--text-secondary);
 }
 
-body.dark-mode .home-title {
+body.light-mode .home-title {
     color: var(--accent-blue);
 }
 
-body.dark-mode #resultsTable {
+body.light-mode #resultsTable {
     color: var(--text-primary);
 }
 
-body.dark-mode #resultsTable th {
+body.light-mode #resultsTable th {
     background: var(--bg-tertiary);
     color: var(--text-primary);
     border-color: var(--border-color);
 }
 
-body.dark-mode #resultsTable td {
+body.light-mode #resultsTable td {
     border-color: var(--border-color);
     color: var(--text-primary);
 }
 
-body.dark-mode #resultsTable tr:hover {
+body.light-mode #resultsTable tr:hover {
     background: var(--bg-tertiary);
 }
 
-body.dark-mode #resultsTable td:nth-child(1),
-body.dark-mode #resultsTable td:nth-child(3) {
+body.light-mode #resultsTable td:nth-child(1),
+body.light-mode #resultsTable td:nth-child(3) {
     color: var(--accent-blue);
 }
 
-body.dark-mode #resultsTable td:nth-child(2) {
+body.light-mode #resultsTable td:nth-child(2) {
     color: var(--text-primary);
 }
 
-body.dark-mode #resultsTable td:nth-child(4) {
+body.light-mode #resultsTable td:nth-child(4) {
     color: var(--text-secondary);
 }
 
-body.dark-mode #resultsTable td:nth-child(5) a {
+body.light-mode #resultsTable td:nth-child(5) a {
     color: var(--accent-blue);
 }
 
-body.dark-mode #resultsTable td:nth-child(5) a:hover {
+body.light-mode #resultsTable td:nth-child(5) a:hover {
     color: var(--accent-blue);
     opacity: 0.8;
 }
 
-body.dark-mode .modal-content {
+body.light-mode .modal-content {
     background: var(--bg-secondary);
     border-color: var(--border-color);
     color: var(--text-primary);
 }
 
-body.dark-mode .modal-header h2 {
+body.light-mode .modal-header h2 {
     color: var(--text-primary);
 }
 
-body.dark-mode .close-btn {
+body.light-mode .close-btn {
     color: var(--text-primary);
 }
 
-body.dark-mode .close-btn:hover {
+body.light-mode .close-btn:hover {
     color: var(--text-secondary);
 }
 
-body.dark-mode .history-item {
+body.light-mode .history-item {
     background: var(--bg-tertiary);
     border-color: var(--border-color);
     color: var(--text-primary);
 }
 
-body.dark-mode .history-item:hover {
+body.light-mode .history-item:hover {
     background: var(--border-color);
 }
 
-body.dark-mode .history-item-text {
+body.light-mode .history-item-text {
     color: var(--text-primary);
 }
 
-body.dark-mode .history-item-date {
+body.light-mode .history-item-date {
     color: var(--text-secondary);
 }

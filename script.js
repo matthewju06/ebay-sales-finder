@@ -60,7 +60,8 @@ if (downloadButton) {
 // 4. if query valid but not in ebay system, throw
 // 5.
 async function handleSearch() {
-    const query = searchInput.value.trim();
+    let const query = searchInput.value.trim();
+    query = capitalizeWords(query);
 
     // empty search query
     if (!query) {
@@ -283,8 +284,8 @@ function drawListingsByPrice(items){
         return;
     }
 
-    const isDarkMode = document.body.classList.contains('dark-mode');
-    const textColor = isDarkMode ? '#e5e5e5' : '#333';
+    const isLightMode = document.body.classList.contains('light-mode');
+    const textColor = isLightMode ? '#333' : '#e5e5e5';
 
     // Separate data by condition
     const newData = [];
@@ -376,7 +377,7 @@ function drawListingsByPrice(items){
                 x: { 
                     title: { display: true, text: "Price ($)" },
                     ticks: { color: textColor },
-                    grid: { color: isDarkMode ? '#404040' : '#e5e5e5' }
+                    grid: { color: isLightMode ? '#e5e5e5' : '#404040'}
                 },
             },
         },
@@ -390,9 +391,9 @@ function drawPriceVsSellerScore(items){
         return;
     }
 
-    const isDarkMode = document.body.classList.contains('dark-mode');
-    const textColor = isDarkMode ? '#e5e5e5' : '#333';
-    const gridColor = isDarkMode ? '#404040' : '#e5e5e5';
+    const isLightMode = document.body.classList.contains('light-mode');
+    const textColor = isLightMode ? '#333' : '#e5e5e5';
+    const gridColor = isLightMode ? '#404040' : '#e5e5e5';
 
     // Separate data by condition
     const newData = [];
@@ -508,9 +509,9 @@ function drawPriceVsDateListed(items) {
         return;
     }
   
-    const isDarkMode = document.body.classList.contains('dark-mode');
-    const textColor = isDarkMode ? '#e5e5e5' : '#333';
-    const gridColor = isDarkMode ? '#404040' : '#e5e5e5';
+    const isLightMode = document.body.classList.contains('light-mode');
+    const textColor = isLightMode ? '#333' : '#e5e5e5';
+    const gridColor = isLightMode ? '#404040' : '#e5e5e5';
 
     // Separate data by condition
     const newData = [];
@@ -644,9 +645,9 @@ function drawNewVsUsed(items) {
         }
     }
 
-    const isDarkMode = document.body.classList.contains('dark-mode');
-    const textColor = isDarkMode ? '#e5e5e5' : '#333';
-    const gridColor = isDarkMode ? '#404040' : '#e5e5e5';
+    const isLightMode = document.body.classList.contains('light-mode');
+    const textColor = isLightMode ? '#333' : '#e5e5e5';
+    const gridColor = isLightMode ? '#404040' : '#e5e5e5';
 
     const data = {
         labels: ['New', 'Used', 'Other'],
@@ -687,7 +688,7 @@ function drawNewVsUsed(items) {
                     }
                 },
                 tooltip: {
-                    backgroundColor: isDarkMode ? '#2d2d2d' : '#ffffff',
+                    backgroundColor: isLightMode ? '#ffffff' : '#2d2d2d',
                     titleColor: textColor,
                     bodyColor: textColor,
                     borderColor: gridColor,
@@ -847,11 +848,11 @@ function getThemeIcon() {
 function loadTheme() {
     const savedTheme = localStorage.getItem('theme');
     const themeIcon = getThemeIcon();
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-mode');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-mode');
         if (themeIcon) themeIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
     } else {
-        document.body.classList.remove('dark-mode');
+        document.body.classList.remove('light-mode');
         if (themeIcon) themeIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>';
     }
 }
@@ -863,29 +864,29 @@ function toggleTheme(e) {
         e.stopPropagation();
     }
     
-    const isDarkMode = document.body.classList.contains('dark-mode');
+    const isLightMode = document.body.classList.contains('light-mode');
     const themeIcon = getThemeIcon();
     
-    if (isDarkMode) {
-        document.body.classList.remove('dark-mode');
-        localStorage.setItem('theme', 'light');
+    if (isLightMode) {
+        document.body.classList.remove('light-mode');
+        localStorage.setItem('theme', 'dark');
         if (themeIcon) themeIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>';
     } else {
-        document.body.classList.add('dark-mode');
-        localStorage.setItem('theme', 'dark');
+        document.body.classList.add('light-mode');
+        localStorage.setItem('theme', 'light');
         if (themeIcon) themeIcon.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>';
     }
     
     // Update chart colors if charts exist (after toggle, so check new state)
     setTimeout(() => {
-        const newIsDarkMode = document.body.classList.contains('dark-mode');
-        const textColor = newIsDarkMode ? '#e5e5e5' : '#333';
-        const gridColor = newIsDarkMode ? '#404040' : '#e5e5e5';
+        const newIsLightMode = document.body.classList.contains('light-mode');
+        const textColor = newIsLightMode ? '#333' : '#e5e5e5';
+        const gridColor = newIsLightMode ? '#404040' : '#e5e5e5';
         
         // Update donut chart
         if (window.newVsUsedChart) {
             window.newVsUsedChart.options.plugins.legend.labels.color = textColor;
-            window.newVsUsedChart.options.plugins.tooltip.backgroundColor = newIsDarkMode ? '#2d2d2d' : '#ffffff';
+            window.newVsUsedChart.options.plugins.tooltip.backgroundColor = newIsLightMode ? '#2d2d2d' : '#ffffff';
             window.newVsUsedChart.options.plugins.tooltip.titleColor = textColor;
             window.newVsUsedChart.options.plugins.tooltip.bodyColor = textColor;
             window.newVsUsedChart.options.plugins.tooltip.borderColor = gridColor;
@@ -947,6 +948,21 @@ function initThemeToggle() {
 
 // Initialize immediately (script is at end of body, so DOM should be ready)
 initThemeToggle();
+
+function capitalizeWords(str) {
+    // 1. Convert the entire string to lowercase to ensure consistency
+    const lowercasedStr = str.toLowerCase(); 
+    
+    // 2. Split the string into an array of words based on spaces
+    const words = lowercasedStr.split(' ');
+    
+    // 3. Use the map() method to iterate through the words array
+    const capitalizedWords = words.map(word => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    });
+    
+    return capitalizedWords.join(' ');
+  }
 
 // Also try on DOMContentLoaded as backup
 document.addEventListener('DOMContentLoaded', initThemeToggle);
