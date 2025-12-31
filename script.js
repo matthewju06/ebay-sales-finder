@@ -439,6 +439,10 @@ function drawListingsByPrice(items){
                             enabled: true,
                             speed: 0.02
                         },
+                        drag: {
+                            enabled: true,
+                            modifierKey: null
+                        },
                         mode: 'xy',
                     },
                     pan: {
@@ -612,6 +616,10 @@ function drawPriceVsSellerScore(items){
                         pinch: {
                             enabled: true,
                             speed: 0.02
+                        },
+                        drag: {
+                            enabled: true,
+                            modifierKey: null
                         },
                         mode: 'xy',
                     },
@@ -788,6 +796,10 @@ function drawPriceVsDateListed(items) {
                         pinch: {
                             enabled: true,
                             speed: 0.02
+                        },
+                        drag: {
+                            enabled: true,
+                            modifierKey: null
                         },
                         mode: 'xy',
                     },
