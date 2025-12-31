@@ -391,7 +391,7 @@ function drawListingsByPrice(items){
                         color: textColor,
                         font: {
                             size: 12,
-                            family: 'Inter'
+                            family: 'Geist Mono'
                         },
                         padding: 10
                     }
@@ -404,14 +404,14 @@ function drawListingsByPrice(items){
                         display: true, 
                         text: "Price ($)",
                         font: {
-                            family: 'Inter'
+                            family: 'Geist Mono'
                         },
                         color: textColor
                     },
                     ticks: { 
                         color: textColor,
                         font: {
-                            family: 'Inter'
+                            family: 'Geist Mono'
                         }
                     },
                     grid: { color: isLightMode ? '#e5e5e5' : '#333333'}
@@ -547,7 +547,7 @@ function drawPriceVsSellerScore(items){
                         color: textColor,
                         font: {
                             size: 12,
-                            family: 'Inter'
+                            family: 'Geist Mono'
                         },
                         padding: 10
                     }
@@ -561,14 +561,14 @@ function drawPriceVsSellerScore(items){
                       display: true, 
                       text: "Seller feedback (%)",
                       font: {
-                          family: 'Inter'
+                          family: 'Geist Mono'
                       },
                       color: textColor
                   },
                   ticks: { 
                       color: textColor,
                       font: {
-                          family: 'Inter'
+                          family: 'Geist Mono'
                       }
                   },
                   grid: { color: gridColor }
@@ -578,14 +578,14 @@ function drawPriceVsSellerScore(items){
                       display: true, 
                       text: "Price ($)",
                       font: {
-                          family: 'Inter'
+                          family: 'Geist Mono'
                       },
                       color: textColor
                   },
                   ticks: { 
                       color: textColor,
                       font: {
-                          family: 'Inter'
+                          family: 'Geist Mono'
                       }
                   },
                   grid: { color: gridColor }
@@ -723,7 +723,7 @@ function drawPriceVsDateListed(items) {
                         color: textColor,
                         font: {
                             size: 12,
-                            family: 'Inter'
+                            family: 'Geist Mono'
                         },
                         padding: 10
                     }
@@ -737,14 +737,14 @@ function drawPriceVsDateListed(items) {
                     display: true, 
                     text: "Date listed",
                     font: {
-                        family: 'Inter'
+                        family: 'Geist Mono'
                     },
                     color: textColor
                 },
                 ticks: { 
                     color: textColor,
                     font: {
-                        family: 'Inter'
+                        family: 'Geist Mono'
                     }
                 },
                 grid: { color: gridColor }
@@ -754,14 +754,14 @@ function drawPriceVsDateListed(items) {
                     display: true, 
                     text: "Price ($)",
                     font: {
-                        family: 'Inter'
+                        family: 'Geist Mono'
                     },
                     color: textColor
                 },
                 ticks: { 
                     color: textColor,
                     font: {
-                        family: 'Inter'
+                        family: 'Geist Mono'
                     }
                 },
                 grid: { color: gridColor }
@@ -863,7 +863,7 @@ function drawNewVsUsed(items) {
                         color: textColor,
                         font: {
                             size: 12,
-                            family: 'Inter'
+                            family: 'Geist Mono'
                         },
                         padding: 10
                     }
@@ -875,10 +875,10 @@ function drawNewVsUsed(items) {
                     borderColor: gridColor,
                     borderWidth: 1,
                     titleFont: {
-                        family: 'Inter'
+                        family: 'Geist Mono'
                     },
                     bodyFont: {
-                        family: 'Inter'
+                        family: 'Geist Mono'
                     }
                 }
             }
