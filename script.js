@@ -310,7 +310,7 @@ function drawListingsByPrice(items){
     }
 
     const isLightMode = document.body.classList.contains('light-mode');
-    const textColor = isLightMode ? '#000000' : '#bcbcbc';
+    const textColor = isLightMode ? '#000000' : '#e5e5e5';
 
     // Separate data by condition
     const newData = [];
@@ -432,7 +432,7 @@ function drawListingsByPrice(items){
                     },
                     zoom: {
                         wheel: {
-                            enabled: true,
+                            enabled: false,
                             speed: 0.02
                         },
                         pinch: {
@@ -461,7 +461,7 @@ function drawPriceVsSellerScore(items){
     }
 
     const isLightMode = document.body.classList.contains('light-mode');
-    const textColor = isLightMode ? '#000000' : '#bcbcbc';
+    const textColor = isLightMode ? '#000000' : '#e5e5e5';
     const gridColor = isLightMode ? '#e5e5e5' : '#333333';
 
     // Separate data by condition
@@ -606,7 +606,7 @@ function drawPriceVsSellerScore(items){
                     },
                     zoom: {
                         wheel: {
-                            enabled: true,
+                            enabled: false,
                             speed: 0.02
                         },
                         pinch: {
@@ -635,7 +635,7 @@ function drawPriceVsDateListed(items) {
     }
   
     const isLightMode = document.body.classList.contains('light-mode');
-    const textColor = isLightMode ? '#000000' : '#bcbcbc';
+    const textColor = isLightMode ? '#000000' : '#e5e5e5';
     const gridColor = isLightMode ? '#e5e5e5' : '#333333';
 
     // Separate data by condition
@@ -782,7 +782,7 @@ function drawPriceVsDateListed(items) {
                     },
                     zoom: {
                         wheel: {
-                            enabled: true,
+                            enabled: false,
                             speed: 0.02
                         },
                         pinch: {
@@ -1143,6 +1143,10 @@ function toggleTheme(e) {
                     Object.keys(chart.options.scales).forEach(scaleKey => {
                         if (chart.options.scales[scaleKey].ticks) {
                             chart.options.scales[scaleKey].ticks.color = textColor;
+                        }
+                        // Add this to update title color:
+                        if (chart.options.scales[scaleKey].title) {
+                            chart.options.scales[scaleKey].title.color = textColor;
                         }
                         if (chart.options.scales[scaleKey].grid) {
                             chart.options.scales[scaleKey].grid.color = gridColor;
