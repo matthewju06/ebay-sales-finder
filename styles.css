@@ -306,7 +306,7 @@ button {
 .dashboard-title {
     font-size: 1.8em;
     font-weight: 600;
-    color: var(var(--text-primary));
+    color: var(--text-primary);
     margin-bottom: 20px;
 }
 
@@ -555,7 +555,6 @@ button {
     width: 90%;
     max-width: 600px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    border: 1px solid #e5e5e5;
     animation: slideDown 0.3s;
 }
 

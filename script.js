@@ -237,7 +237,7 @@ function displayResults(data, query) {
 }
 
 // Populate dashboard with metrics and data
-function populateDashboard(items) {
+function populateDashboard(items, query) {
     // Extract and parse prices
     const prices = items
         .map(item => {
