@@ -702,6 +702,18 @@ body {
     text-decoration: underline;
 }
 
+.unselectable-text {
+    /* Standard property (supported by most modern browsers) */
+    user-select: none;
+  
+    /* Vendor prefixes for broader compatibility */
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Safari, Chrome, Opera */
+    -khtml-user-select: none;    /* Konqueror HTML */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+  }  
+
 /* Medium screens: Adjust layout for fixed-width cards */
 @media (max-width: 1200px) and (min-width: 901px) {
     .dashboard-layout {
