@@ -77,16 +77,6 @@ window.addEventListener('click', (e) => {
     }
 });
 
-// Download button handler
-const downloadButton = document.getElementById('downloadButton');
-if (downloadButton) {
-    downloadButton.addEventListener('click', () => {
-        // Placeholder for download functionality
-        console.log('Download all data clicked');
-    });
-}
-
-
 // api.py search requester
 async function searchAPI(query) {
     const response = await fetch('/api/search', {
@@ -147,9 +137,13 @@ async function handleSearch() {
     }
 }
 
+let lastQuery = '';
+
 // Display search results
 function displayResults(data, query) {
+    lastQuery = query;
     const items = data.itemSummaries || [];
+    lastItems = items;
 
     dashboardTitle.innerHTML = `Overview: <span style="color: #0064D2;">${capitalizeWords(query)}</span>`;
 
@@ -234,8 +228,46 @@ function displayResults(data, query) {
     showResults();
 }
 
+function itemsToCsv(items) {
+    const headers = ['#','Title','Price','Condition','Link','Seller','Category'];
+    const rows = items.map((item, idx) => [
+        idx + 1,
+        item.title || 'N/A',
+        (item.price?.value ?? item.price ?? 'N/A'),
+        item.condition || 'N/A',
+        item.itemWebUrl || item['item link'] || 'N/A',
+        item.seller?.username ? `${item.seller.username} (${item.seller.feedbackPercentage ?? 'N/A'}%)` : 'N/A',
+        item.categories?.[0]?.categoryName || 'N/A',
+    ]);
+
+    const csv = [headers, ...rows]
+    .map(row => row.map(v => `"${String(v).replace(/"/g, '""')}"`).join(','))
+    .join('\n');
+    return csv;
+}
+
+
+function downloadCsv(filename, csvText) {
+    const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(url);
+}
+
+// Download button handler
+const downloadButton = document.getElementById('downloadButton');
+downloadButton.addEventListener('click', () => {
+    if (!lastItems.length) return;
+    const safe = lastQuery.trim().replace(/[^a-z0-9_-]+/gi, '-');
+    const filename = safe ? `${safe}-results.csv` : 'ebay-results.csv';
+    downloadCsv(filename, itemsToCsv(lastItems));
+});
+
 // Populate dashboard with metrics and data
-function populateDashboard(items, query) {
+function populateDashboard(items) {
     // Extract and parse prices
     const prices = items
         .map(item => {
@@ -891,33 +923,6 @@ function drawNewVsUsed(items) {
     });
 }
 
-// Show mock results for testing (remove when backend is connected)
-// function showMockResults(query) {
-//     const mockData = {
-//         itemSummaries: [
-//             {
-//                 title: "Sample Product 1 - Brand New Item",
-//                 price: { value: "29.99", currency: "USD" },
-//                 condition: "NEW",
-//                 itemWebUrl: "https://www.ebay.com"
-//             },
-//             {
-//                 title: "Sample Product 2 - Used Condition",
-//                 price: { value: "19.99", currency: "USD" },
-//                 condition: "USED",
-//                 itemWebUrl: "https://www.ebay.com"
-//             },
-//             {
-//                 title: "Sample Product 3 - Excellent Condition",
-//                 price: { value: "49.99", currency: "USD" },
-//                 condition: "EXCELLENT",
-//                 itemWebUrl: "https://www.ebay.com"
-//             }
-//         ]
-//     };
-    
-//     displayResults(mockData, query || 'Mock Search');
-// }
 
 // UI helper functions
 function showLoading() {

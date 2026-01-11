@@ -129,7 +129,8 @@ body {
 #searchInput {
     width: 100%;
     padding: 0 20px;
-    font-size: 16px;
+    font-size: 15px;
+    font-family: inherit;
     line-height: 1.2;
     background: transparent;
     color: #bcbcbc;
@@ -151,9 +152,10 @@ body {
 
 #searchButton {
     padding: 0 60px;
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.2;
     font-weight: 600;
+    font-family: inherit;
     background: #0064D2;
     color: white;
     border: none;
@@ -197,6 +199,7 @@ body {
 .history-btn {
     padding: 0 24px;
     font-size: 14px;
+    font-family: inherit;
     line-height: 1.2;
     font-weight: 600;
     background: var(--bg-tertiary);
@@ -680,8 +683,9 @@ body {
 
 .download-btn {
     padding: 10px 20px;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
+    font-family: inherit;
     background: #0064D2;
     color: white;
     border: none;
